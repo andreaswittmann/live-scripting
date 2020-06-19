@@ -65,9 +65,81 @@ Es können jezt Shell-Befehle direkt ausgeführt werden. Der Code-Block dient nu
 
 #+begin_src bash
 ### Der 
-la -la
+
+ls -la
 date
 whoami
 pwd
 #+end_src
+
+** Spacemacs Konfiguration
+Emacs Konfiguraiton ist sehr zeitaufwendig. Mit dem Spacemacs Projekt erhält man eine sehr umfangreich konfiguriertes Emacs.
+
+#+begin_src bash
+### move emacs directory, to save it. 
+mv ~/.emacs.d ~/_emacs.d
+mkdir ~/.emacs.d
+cd ~/.emacs.d
+ls -la
+### Install spacemacs
+git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+#+end_src
+
+Emacs wird nun neu gestartet. Es folgt der Spacemacs Startdialog.
+Ich wähle ich folgende Optionen:
+- Editing Style: emacs
+- Distribution: standard
+- Completion Frameword: helm
+
+Ich editire ~/.spacemacs um folgende Layers zu benutzen:
+#+begin_quote
+   ;; List of configuration layers to load.
+   dotspacemacs-configuration-layers
+   '(
+     ;; ----------------------------------------------------------------
+     ;; Example of useful layers you may want to use right away.
+     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
+     ;; <M-m f e R> (Emacs style) to install them.
+     ;; ----------------------------------------------------------------
+     helm
+     auto-completion
+     ;; better-defaults
+     emacs-lisp
+     git
+     markdown
+     org
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
+     spell-checking
+     ;; syntax-checking
+     version-control
+     themes-megapack
+     )
+   ;; List of additional packages that will be installed without being
+   ;; wrapped in a layer. If you need some configuration for these
+   ;; packages, then consider creating a layer. You can also put the
+   ;; configuration in `dotspacemacs/user-config'.
+   dotspacemacs-additional-packages
+   '(
+     minimap
+     sr-speedbar
+     ;;;; Org
+     org-beautify-theme
+    
+   )
+ 
+#+end_quote
+
+Emacs muss danach mehrfach neu gestartet werden, bis er sich fehlerfrei initialisiert.
+
+
+
+
+
+
+
+
+
+
 
