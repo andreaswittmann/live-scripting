@@ -92,7 +92,7 @@ Ich wähle ich folgende Optionen:
 - Completion Frameword: helm
 
 Ich editire ~/.spacemacs um folgende Layers zu benutzen:
-#+begin_quote
+#+begin_src
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
