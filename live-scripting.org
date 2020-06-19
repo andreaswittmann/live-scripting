@@ -10,5 +10,64 @@ live-scripting    -*- mode: org; -*-
 Die Installation wird unter Lubuntu ausgeführt. Lubunut ist leichtgewichtig und eignet sich daher auch für virtuelle Machinen und Cloudumgebungen.
 
 
+** Vorraussetzungen
+Es ist ein Linux mit einem graphischen Interface und einer GNU Emacs Installation notwenig, um Live-Scripting aufzusezten.
+In diesem Beispiel wird Lubuntu 19.10 und GNU Emacs 26.3 verwendet. 
 
- 
+#+Caption: Dieses Listing zeigt den Lubuntu Upgrade von von 19.04 auf 19.10 und die Emacs Installation.
+#+begin_src bash
+sudo sed -i -e 's|disco|eoan|g' /etc/apt/sources.list
+sudo apt update
+sudo apt upgrade
+
+### Neues Release
+lubuntu@lubuntu-pc:~$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 19.10
+Release:        19.10
+Codename:       eoan
+
+### Install emacs
+lubuntu@lubuntu-pc:~$ sudo snap install emacs --classic
+2020-06-19T09:39:50+02:00 INFO Waiting for restart...
+emacs 26.3 from Alex Murray (alexmurray) installed
+
+### Clone project live-scripting
+mkdir org; cd org
+git clone https://github.com/andreaswittmann/live-scripting.git 
+#+end_src
+
+Damit sind die Vorraussetzungen für live-scripting geschaffen.
+
+
+** Basic Live-Scripting
+In der Basis-Konfiguration wird die GNU Emacs Installation angepasst, um aus einer Orgmode-Datei Shell-Befehle auszuführen.
+Dazu muss benutzen wir die init.el aus diesem Projekt
+
+#+begin_src bash
+### Copy init.el to emacs
+cp ~/org/live-scripting/init.el ~/.emacs.d/
+
+### Restart emacs
+#+end_src 
+
+Wir öffnen nun in emacs zwei Fenster nebeneinander. Im rechten führen wir ein ansi-term aus. 
+Im linken Fenster führen wir Shell-Befehle aus einer Orgmode-Datei aus. 
+
+| M-x 3         | 2 Fenster öffnen                     |
+| C-x o         | other-window                         |
+| M-x ansi-term | Ansi Term öffnen                     |
+| C-x 0         | other-window                         |
+| F5            | Befehl senden und eine Zeile weiter. |
+
+Es können jezt Shell-Befehle direkt ausgeführt werden. Der Code-Block dient nur der Formatierung. 
+
+#+begin_src bash
+### Der 
+la -la
+date
+whoami
+pwd
+#+end_src
+
