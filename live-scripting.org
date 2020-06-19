@@ -1,0 +1,14 @@
+live-scripting    -*- mode: org; -*-
+
+
+
+* Einleitung 
+- Was ist Live-Scripting?
+ 
+
+* Installation unter lubuntu
+Die Installation wird unter Lubuntu ausgeführt. Lubunut ist leichtgewichtig und eignet sich daher auch für virtuelle Machinen und Cloudumgebungen.
+
+
+
+ 
