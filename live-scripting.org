@@ -130,18 +130,18 @@ Ich editire ~/.spacemacs um folgende Layers zu benutzen:
      sr-speedbar
      ;;;; Org
      org-beautify-theme
->>>>>>> c4fdc564142ab75f3a2f987d4b8a295e6af40ff4
     
     )
- 
+#+end_src 
 
  Emacs muss danach mehrfach neu gestartet werden, bis er sich fehlerfrei initialisiert.
 
 Ich möchte das Datei .spacemacs ein Teil des Projekts wird. Sie wird vom Benutzerverzeichnis verlinkt.
-#+begin_src basl
+#+begin_src bash
 cd ~
 mv .spacemacs org/live-scripting/
 ln -s ~/org/live-scripting/.spacemacs ~/.spacecmacs
+
 #+end_src
 
 
