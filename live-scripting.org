@@ -74,8 +74,6 @@ pwd
 
 ** Spacemacs Konfiguration
 Emacs Konfiguraiton ist sehr zeitaufwendig. Mit dem Spacemacs Projekt erhält man eine sehr umfangreich konfiguriertes Emacs.
-
-<<<<<<< HEAD
 *** Installation
 Spacemacs wird von GitHub geklont. Vorher sichere ich das Zielverzeichnis weg, damit es nicht überschrieben wird. Das alte init.el wird nicht mehr verwendet.
 
@@ -143,6 +141,113 @@ mv .spacemacs org/live-scripting/
 ln -s ~/org/live-scripting/.spacemacs ~/.spacecmacs
 
 #+end_src
+
+
+*** Default Theme einstellen. 
+Dazu muss man die Variable dotspacemacs-themes in .spacemacs editieren.
+#+begin_src emacs-lisp
+   ;; List of themes, the first of the list is loaded when spacemacs starts.
+   ;; Press <SPC> T n to cycle to the next theme in the list (works great
+   ;; with 2 themes variants, one dark and one light)
+   dotspacemacs-themes '(leuven
+                         tangotango
+                         spacemacs-dark
+                         spacemacs-light)
+
+#+end_src
+
+
+*** Send to ansi-term 
+Das alte inti.el wurde durch das .spacemacs ersetzt. Ich muss hier die Änderungen machen um den ansi-term zu steuern.
+Dazu wird die Funktion  dotspacemacs/user-config erweitert.
+
+
+#+begin_src emacs-lisp
+;;;; Send region and line to ansi-term
+;; https://emacs.stackexchange.com/questions/28122/how-to-execute-shell-command-from-editor-window/28126#28126
+(defun send-region-to-ansi ()
+  "If region active, send it to ansi-term buffer."
+  (interactive)
+  (if (region-active-p) 
+      (send-region "*ansi-term*" (region-beginning) (region-end))))
+
+;; Meine Erweiterungum Lines zu senden
+(defun my-select-current-line ()
+  "Selects the current line, including the NEXT-LINE char at the end"
+  (interactive)
+  (move-beginning-of-line nil)
+  (set-mark-command nil)
+  (move-end-of-line 2)
+  (move-beginning-of-line nil)
+  (setq deactivate-mark nil))
+
+(defun send-line-to-ansi ()
+  "If region active, send it to ansi-term buffer."
+  (interactive)
+  (my-select-current-line)
+  (if (region-active-p)
+      (send-region "*ansi-term*" (region-beginning) (region-end)))
+   (deactivate-mark 1))
+
+;; das funktioniert sehr gut. Binden auf F8
+(global-set-key [f5] 'send-line-to-ansi)
+(global-set-key [f6] 'send-region-to-ansi)
+(global-set-key [f7] 'other-window)
+(global-set-key (kbd "C-n") 'other-window)
+
+;; In ansi-term toggle between char run/line run mode.
+;;http://joelmccracken.github.io/entries/switching-between-term-mode-and-line-mode-in-emacs-term/
+(defun jnm/term-toggle-mode ()
+  "Toggles term between line mode and char mode"
+  (interactive)
+  (if (term-in-line-mode)
+      (term-char-mode)
+    (term-line-mode)))
+(global-set-key [f8] 'jnm/term-toggle-mode)
+
+
+
+  ;; Moving Lines, from http://emacsredux.com/blog/2013/04/02/move-current-line-up-or-down/
+  ;; Transpose function for lines 
+  (defun move-line-up ()
+    "Move up the current line."
+    (interactive)
+    (transpose-lines 1)
+    (forward-line -2)
+    (indent-according-to-mode))
+
+  (defun move-line-down ()
+    "Move down the current line."
+    (interactive)
+    (forward-line 1)
+    (transpose-lines 1)
+    (forward-line -1)
+    (indent-according-to-mode))
+
+  ;; Diese Kürzel kollidieren nicht mit org-mode
+  (define-key input-decode-map "\e[1;5A" [C-up])
+  (define-key input-decode-map "\e[1;5B" [C-down])
+  (global-set-key [(C-up)] 'move-line-up)
+  (global-set-key [(C-down)] 'move-line-down)
+#+end_src
+
+Jetzt können Befehl direkt in einem ansi-term ausgeführt werden.
+Test:
+
+| F5 | send line to ansi-term        |
+| F6 | send region to ansi-term      |
+| F7 | othe window (C-x o)           |
+| F8 | toggle char run/line run mode |
+
+
+#+begin_src bash
+ls -la
+pwd
+whoami
+date
+#+end_src
+
+
 
 
 
