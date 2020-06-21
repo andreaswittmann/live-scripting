@@ -310,10 +310,20 @@ cd ~/.ssh
 ssh-keygen -t rsa -b 4096 -C "lubuntu.mac@live-scripting.de"
 id_rsa_github
 
-ls -la 
 
 # Empty Passpharse + repeat
 ls -la
+## creat config file
+cat << EOF > ~/.ssh/config
+Host github.com
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/id_rsa_github
+EOF
+ 
+cat  ~/.ssh/config
+
+
+
 ### Copy the public Key to github
 cat id_rsa_github.pub
 
@@ -336,6 +346,11 @@ git remote -v
 git pull -v 
 git push -v
 yes
+
+
+ssh-agent
+
+
 
 #+end_src
 
