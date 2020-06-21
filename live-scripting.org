@@ -290,3 +290,57 @@ Starting new Ispell process /usr/bin/hunspell with deutsch dictionary...
 Saving file /home/lubuntu/org/live-scripting/.spacemacs...
 #+end_src
 
+*** Magit Authentication
+Ich möchte von Magit nach Github schreiben können, ohne erneut das Password einzugeben.
+Das geht mit SSH Schlüssel in drei Schritten. 
+
+*1. SSH-Schlüsselpaar erzeugen:*
+*2. Öffentlicher Schlüssel in GitHub registireren.:*
+*3. GitHub URL auf ssh umstellen:*
+
+#+begin_src bash
+### Check for keys.
+cd ~
+ls -la .ssh
+
+
+### Generate key
+mkdir .ssh 
+cd ~/.ssh
+ssh-keygen -t rsa -b 4096 -C "lubuntu.mac@live-scripting.de"
+id_rsa_github
+
+ls -la 
+
+# Empty Passpharse + repeat
+ls -la
+### Copy the public Key to github
+cat id_rsa_github.pub
+
+
+### Add key to ssh agent
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa_github
+ssh-add ~/.ssh/id_rsa_github.pub
+
+### Switch the URLs from HTTPS to SSH
+cd ~/org/live-scripting
+git remote -v
+#origin  https://github.com/andreaswittmann/live-scripting.git (fetch)
+#origin  https://github.com/andreaswittmann/live-scripting.git (push)
+git remote set-url origin  https://github.com/andreaswittmann/live-scripting.git
+git remote set-url origin  ssh://git@github.com/andreaswittmann/live-scripting.git
+
+git remote -v
+
+git pull -v 
+git push -v
+yes
+
+#+end_src
+
+
+
+
+
+
