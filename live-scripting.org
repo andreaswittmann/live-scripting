@@ -257,3 +257,36 @@ date
 
 
 
+
+
+*** Flyspell konfigurieren.
+Flyspell funktioniert bereits. Ich möchte das Dictionary auf deutsch umstellen.
+Dazu muss es erste installiert werden. Das geht bei Ubuntu über den Paket-Manager.
+Ich möchte aber lieber hunspell verwenden und installiere es gleich mit. 
+Hinweise zu Dictionaries gibt es bei Ubuntu: [[https://wiki.ubuntuusers.de/Rechtschreibkorrektur/#Woerterb%C3%BCcher][https://wiki.ubuntuusers.de/Rechtschreibkorrektur/#Woerterb%C3%BCcher]]
+
+#+begin_src  bash
+### aspell Dictionary laden
+sudo apt-get install aspell-de
+
+### Hunspell installieren.
+sudo apt-get install hunspell
+sudo apt-get install hunspell-de-de
+sudo apt-get install hunspell-de-de-frami 
+
+which hunspell  # /usr/bin/hunspell
+#+end_src
+
+
+
+| M-x ispell-change-dictionray               | deutsch wählen.                     |
+| M-x customize-varialbe ispell-dictionary   | Sting wählen und deutsch eintragen. |
+| M-x customize-varialbe ispell-program-name | Eintrag: /usr/bin/hunspell          |
+
+Test: Welches Programm wird verwendet? 
+Im Message-Buffer findet sich der Eintrag: 
+#+begin_src 
+Starting new Ispell process /usr/bin/hunspell with deutsch dictionary...
+Saving file /home/lubuntu/org/live-scripting/.spacemacs...
+#+end_src
+
