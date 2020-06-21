@@ -355,4 +355,48 @@ Dazu muss die Variable org-download-method per Customization angepasst werden.
 [[attachment:2020-06-21_17-52-54_2020-06-21_17-51-44.png]]
 
 
+*** Adobe Font Source Code Pro installieren
+Das ist der Default Font für Spacemacs.
+Es gibt eine Anleitung unter: https://gist.github.com/enzinier/8d00d3f37d2e23985dcfa65662d163fa
+
+#+begin_src bash
+#!/bin/sh
+# Userland mode (~$USER/), (~/).
+
+# ~/.fonts is now deprecated and that
+#FONT_HOME=~/.fonts
+# ~/.local/share/fonts should be used instead
+cd
+FONT_HOME=~/.local/share/fonts
+
+echo "installing fonts at $PWD to $FONT_HOME"
+#mkdir -p "$FONT_HOME/adobe-fonts/source-code-pro"
+f
+ind "$FONT_HOME" -iname '*.ttf' -exec echo '{}' \;
+
+(git clone \
+   --branch release \
+   --depth 1 \
+   'https://github.com/adobe-fonts/source-code-pro.git' \
+   "$FONT_HOME/adobe-fonts/source-code-pro" && \
+fc-cache -f -v "$FONT_HOME/adobe-fonts/source-code-pro")
+
+### Die Fonts liegen jetzt unter ~/.local/share/fonts/adobe-fonts/source-code-pro
+#+end_src
+
+Der verwendete Font kann überprüft werden mit: M-x describe-font
+Das ist mir aber zu klein. Deshalb verwende ich 15pt. Das wird in .spacemacs unter der Variable xxx eingestellt. 
+
+
+#+begin_src emacs-lisp
+   ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
+   ;; quickly tweak the mode-line size to make separators look not too crappy.
+   dotspacemacs-default-font '("Source Code Pro"
+                               :size 15
+                               :weight normal
+                               :width normal
+                               :powerline-scale 1.1)
+#+end_src
+
+
 
