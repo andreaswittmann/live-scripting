@@ -290,13 +290,16 @@ Starting new Ispell process /usr/bin/hunspell with deutsch dictionary...
 Saving file /home/lubuntu/org/live-scripting/.spacemacs...
 #+end_src
 
-*** Magit Authentication
+*** Magit Authentication                                             :ATTACH:
+    :PROPERTIES:
+    :ID:       8e92dbc8-3003-4938-9093-885bc40197a6
+    :END:
 Ich möchte von Magit nach Github schreiben können, ohne erneut das Password einzugeben.
 Das geht mit SSH Schlüssel in drei Schritten. 
 
-*1. SSH-Schlüsselpaar erzeugen:*
-*2. Öffentlicher Schlüssel in GitHub registireren.:*
-*3. GitHub URL auf ssh umstellen:*
+*1. SSH-Schlüsselpaar erzeugen.*
+*2. ssh config Datei erzeugen.*
+*3. Öffentlicher Schlüssel in GitHub registrieren.:*
 
 #+begin_src bash
 ### Check for keys.
@@ -311,51 +314,45 @@ ssh-keygen -t rsa -b 4096 -C "lubuntu.mac@live-scripting.de"
 id_rsa_github
 
 
-# Empty Passpharse + repeat
+# Empty Passpharse 2x RET
 ls -la
-## creat config file
+## create config file
 cat << EOF > ~/.ssh/config
 Host github.com
   IdentitiesOnly yes
   IdentityFile ~/.ssh/id_rsa_github
 EOF
- 
-cat  ~/.ssh/config
-
-
+ cat  ~/.ssh/config
 
 ### Copy the public Key to github
-cat id_rsa_github.pub
+cat ~/.ssh/id_rsa_github.pub
 
-
-### Add key to ssh agent
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa_github
-ssh-add ~/.ssh/id_rsa_github.pub
-
-### Switch the URLs from HTTPS to SSH
-cd ~/org/live-scripting
-git remote -v
-#origin  https://github.com/andreaswittmann/live-scripting.git (fetch)
-#origin  https://github.com/andreaswittmann/live-scripting.git (push)
-git remote set-url origin  https://github.com/andreaswittmann/live-scripting.git
-git remote set-url origin  ssh://git@github.com/andreaswittmann/live-scripting.git
-
-git remote -v
-
+### Check git operations
 git pull -v 
 git push -v
-yes
-
-
-ssh-agent
-
-
 
 #+end_src
 
+Die folgende Abbildung zeigt, wie man den öffentlichen Schlüssel zum GitHub Projekt hinzufügt, um mit SSH darauf zugreifen zu können.
 
 
+#+DOWNLOADED: file:///tmp/VW5DH/2020-06-21_17-15-37.png @ 2020-06-21 17:34:52
+#+Caption: Öffentlichen Schlüssel zum GitHub Projekt hinzufügen.
+[[attachment:2020-06-21_17-34-52_2020-06-21_17-15-37.png]]
+
+*** Konfiguration von org-download                                   :ATTACH:
+    :PROPERTIES:
+    :ID:       b476e18c-3478-4119-90b8-16c7c4b4df23
+    :END:
+org-download ist ein Emacs-Paket, das es erlaubt, Bilder per Drag and Drop einer Org-Datei hinzuzufügen. 
+GitHub: https://github.com/abo-abo/org-download
+
+Org-Download bietet zwei Methoden zum abspeichern der Dateien. Ich möchte den Org-Attachment Mechanismus benutzen. 
+Dazu muss die Variable org-download-method per Customization angepasst werden.
+
+#+DOWNLOADED: file:///tmp/DOS33/2020-06-21_17-51-44.png @ 2020-06-21 17:52:54
+#+Caption: Customization von org-download-method um auf org-attach umzustellen.
+[[attachment:2020-06-21_17-52-54_2020-06-21_17-51-44.png]]
 
 
 
