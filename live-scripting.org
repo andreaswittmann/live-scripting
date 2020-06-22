@@ -385,7 +385,7 @@ fc-cache -f -v "$FONT_HOME/adobe-fonts/source-code-pro")
 #+end_src
 
 Der verwendete Font kann überprüft werden mit: M-x describe-font
-Das ist mir aber zu klein. Deshalb verwende ich 15pt. Das wird in .spacemacs unter der Variable xxx eingestellt. 
+Das ist mir aber zu klein. Deshalb verwende ich 15pt. Das wird in .spacemacs unter der Variable dotspacemacs-default-font eingestellt. 
 
 
 #+begin_src emacs-lisp
@@ -397,6 +397,20 @@ Das ist mir aber zu klein. Deshalb verwende ich 15pt. Das wird in .spacemacs unt
                                :width normal
                                :powerline-scale 1.1)
 #+end_src
+
+
+*** SpeedKeys einrichten.
+ES gibt ein das Modul org-speed-commands, manchmal auch speedkeys genannt,, mit dem sich eine Orgsturktur noch viel schneller navigieren lässt. 
+Um sie zu nutzen muss die variable *org-use-speed-commands* über M-x customize-variable auf non-nil gesetzt werden. 
+Links:
+- Stack Exchange :: [[https://emacs.stackexchange.com/questions/33310/how-to-use-org-mode-speed-commands-speed-keys][key bindings - how to use org-mode speed commands (speed keys)? - Emacs Stack Exchange]]
+- Blog scratch :: [[http://notesyoujustmightwanttosave.blogspot.com/2011/12/org-speed-keys.html][Org Speed Keys | *scratch*]]
+
+#+begin_example
+Speed-Commands Key Binings anzeigen:
+Cursor auf ersten Stern eines Org-Headins + ?
+#+end_example
+
 
 
 
