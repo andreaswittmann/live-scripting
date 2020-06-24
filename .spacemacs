@@ -390,7 +390,8 @@ you should place your code here."
   (global-set-key [(C-down)] 'move-line-down)
 
 
-
+  ;; Lade die Konfiguraiton für org-publish
+  (load-file "~/org/live-scripting/publish-project.el")
 
 
 

@@ -43,7 +43,7 @@ Damit sind die Vorraussetzungen für live-scripting geschaffen.
 
 ** Basic Live-Scripting
 In der Basis-Konfiguration wird die GNU Emacs Installation angepasst, um aus einer Orgmode-Datei Shell-Befehle auszuführen.
-Dazu muss benutzen wir die init.el aus diesem Projekt
+Dazu benutze ich die init.el aus diesem Projekt
 
 #+begin_src bash
 ### Copy init.el to emacs
@@ -468,8 +468,6 @@ Ok.
 
 *** Einrichten von org-publish
 Mit org-publish kann eine Website erstellt werden. 
-Dazu benötige ich die Konfiguration in einer alist Variable.
-
 Zunächst lege ich das Verzeichniss für die Webroot an und vergebe Rechte um als Benutzer lubuntu arbeiten zu können.
 
 #+begin_src bash
@@ -491,7 +489,7 @@ cd ~/org/live-scripting
 find . -exec touch {} \;
 #+end_src
 
-
+Nun benötige ich die Konfiguration in einer alist Variable. Diese Konfiguration beschreibt den Publish Prozess.
 
 #+begin_src emacs-lisp
 ;; Eval mit C-x C-e am Zeilenende
@@ -502,7 +500,7 @@ find . -exec touch {} \;
       '(
 
        ;; ... add all the components here (see below)...
-       ("org" :components ("org-notes" "org-static"))
+       ("orgxxx" :components ("org-notes" "org-static"))
 
 
 
@@ -532,6 +530,7 @@ find . -exec touch {} \;
       ))
 
 
+
 #+end_src
 
 Der Publish-Prozess wird aufgerufen mit: *M-x org-publish-project*
@@ -544,6 +543,15 @@ Dazu
 Test URL: http://localhost/live-scripting/sitemap.html
 Test URL: http://localhost/live-scripting/live-scripting.html
 
+
+*** Konfiguration für org-publish aus externer Datei laden.
+Ich möchte die Konfiguration in einer externen Datei speichern und beim Emacs start laden. 
+Dazu erzeuge ich die Datei publish-project.el und lade sie in .spacemacs:
+#+begin_src emacs-lisp
+;; Lade die Konfiguraiton für org-publish
+(load-file "~/org/live-scripting/publish-project.el")
+#+end_src
+Ok.
 
 *** Dateianhänge und Bilder
 Dateianhänge und Bilder können direkt mit Drag-And-Drop in die Org-Datei reingezogen werden. Das Modul org-download sorgt dann dafür, das diese Dateien eingebettet und im Ordner images abgelegt werden. Bilder werden inline angezeigt, für andere Dateien wird ein Link generiert. 
