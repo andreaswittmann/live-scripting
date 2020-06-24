@@ -297,9 +297,9 @@ Saving file /home/lubuntu/org/live-scripting/.spacemacs...
 Ich möchte von Magit nach Github schreiben können, ohne erneut das Password einzugeben.
 Das geht mit SSH Schlüssel in drei Schritten. 
 
-*1. SSH-Schlüsselpaar erzeugen.*
-*2. ssh config Datei erzeugen.*
-*3. Öffentlicher Schlüssel in GitHub registrieren.:*
+- *1. SSH-Schlüsselpaar erzeugen.*
+- *2. ssh config Datei erzeugen.*
+- *3. Öffentlicher Schlüssel in GitHub registrieren.:*
 
 #+begin_src bash
 ### Check for keys.
@@ -411,6 +411,178 @@ Speed-Commands Key Binings anzeigen:
 Cursor auf ersten Stern eines Org-Headins + ?
 #+end_example
 
+
+
+
+
+
+** Lokale Website erzeugen. 
+Ich möchte nun vom Projekt eine Website erzeugen, die in einem lokalen Webserver läuft. 
+Es ist eine statische Website, die später auf einen Webserver im Internet repliziert werden kann.
+
+*** Installation von nginx
+Ich nutze den nginx Webserver, es gibt ein Installationspaket von Ubuntu.
+Es gibt eine Anleitung unter: 
+[[https://mediatemple.net/community/products/developer/204405534/install-nginx-on-ubuntu][nginx on ubuntu]]
+
+#+begin_src bash
+### Install nginx
+sudo apt-get update
+sudo apt-get install nginx
+Y
+## nginx starten
+sudo  /etc/init.d/nginx start 
+sudo  /etc/init.d/nginx status
+sudo  /etc/init.d/nginx stop
+
+## show web root
+ls -la /var/www/html/index.nginx-debian.html
+
+## setup a simple website:
+sudo mkdir -p /var/www/html/simple
+sudo mkdir -p /var/www/html/simple
+cd  /var/www/html/simple
+ls -la
+sudo chown  lubuntu .
+cat << EOF > /var/www/html/simple/index.html 
+<html>
+<body>
+<h1>Welcome to simple Web!</h1>
+<p>If you see this page, Simple Web ist running.</p>
+
+</body>
+</html>
+EOF
+
+cat index.html
+
+### get local ip address in lan
+ip a  #http://10.211.55.8/
+#+end_src 
+
+URL zum Testen: http://localhost/
+URL zum Testen: http://localhost/index.nginx-debian.html
+URL zum Testen: http://localhost/simple/index.html
+URL im LAN: http://10.211.55.8/
+Ok.
+
+*** Einrichten von org-publish
+Mit org-publish kann eine Website erstellt werden. 
+Dazu benötige ich die Konfiguration in einer alist Variable.
+
+Zunächst lege ich das Verzeichniss für die Webroot an und vergebe Rechte um als Benutzer lubuntu arbeiten zu können.
+
+#+begin_src bash
+### Clean up 
+sudo rm -rf   /var/www/html/live-scripting
+### create directoy for project live-scripting
+sudo mkdir -p   /var/www/html/live-scripting
+### nginx worker and lubuntu must  have access
+sudo chown lubuntu  /var/www/html/live-scripting
+
+cd  /var/www/html/live-scripting
+ls -la
+
+### Force regenerating the project
+rm -r  /var/www/html/live-scripting/*
+ls -la  /var/www/html/live-scripting
+find  /var/www/html/live-scripting
+cd ~/org/live-scripting
+find . -exec touch {} \;
+#+end_src
+
+
+
+#+begin_src emacs-lisp
+;; Eval mit C-x C-e am Zeilenende
+;; Publisch mit M-x org-publish-project RET org RET
+
+(require 'ox-publish)
+(setq org-publish-project-alist
+      '(
+
+       ;; ... add all the components here (see below)...
+       ("org" :components ("org-notes" "org-static"))
+
+
+
+       ("org-notes"
+        :base-directory "~/org/live-scripting/"
+        :base-extension "org"
+        :publishing-directory "/var/www/html/live-scripting"
+        ;;:exclude ".*"
+        ;;:include ["foobar.org"]
+        :recursive t
+        :publishing-function org-html-publish-to-html
+        :headline-levels 4             ; Just the default for this project.
+        :auto-preamble t
+        :auto-sitemap t                ; Generate sitemap.org automagically...
+        :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+        :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+        )
+
+       ("org-static"
+        :base-directory "~/org/live-scripting/"
+        :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|txt\\|mp3\\|ogg\\|swf"
+        :exclude ".git\\|LICENSE"
+        :publishing-directory "/var/www/html/live-scripting/"
+        :recursive t
+        :publishing-function org-publish-attachment
+        )
+      ))
+
+
+#+end_src
+
+Der Publish-Prozess wird aufgerufen mit: *M-x org-publish-project*
+Dann kann im nächsten Schritt eines der in alist konfigurierten Projekte ausgewählt werden.
+
+http://localhost/live-scripting/live-scripting.html
+Es kann sein, das es Fehler gibt. Ich möchte fehlertolerant generieren.
+Dazu 
+
+Test URL: http://localhost/live-scripting/sitemap.html
+Test URL: http://localhost/live-scripting/live-scripting.html
+
+
+*** Dateianhänge und Bilder
+Dateianhänge und Bilder können direkt mit Drag-And-Drop in die Org-Datei reingezogen werden. Das Modul org-download sorgt dann dafür, das diese Dateien eingebettet und im Ordner images abgelegt werden. Bilder werden inline angezeigt, für andere Dateien wird ein Link generiert. 
+Diese Dateien werden auch durch org-publish zur Website kopiert.
+
+Beispiel für ein eingebettetes Bild:
+
+
+#+DOWNLOADED: file:///home/lubuntu/Desktop/banana.jpeg @ 2020-06-24 11:21:33
+#+caption: Eingebettete Bild-Datei 
+[[file:images/Installation_unter_lubuntu/2020-06-24_11-21-33_banana.jpeg]]
+
+Beispiel für eine eingebettete PDF Datei:
+ 
+#+DOWNLOADED: file:///home/lubuntu/Desktop/orgcard.pdf @ 2020-06-24 11:15:55
+#+Caption: Eingebettete PDF Datei.
+[[file:images/Installation_unter_lubuntu/2020-06-24_11-15-55_orgcard.pdf]]
+
+
+*** Problem: Einige Bilder werden nicht angezeigt.
+In der generierten Website werden einige Bilder nicht angezeigt.
+
+**** Analyse
+Es gibt Dateien unter der Webroot, die dem Benutzer lubuntu gehören und keine Leseberechtigung für Andere haben. Der nginx-Workerprozess gehört www-data und kann diese Dateien nicht lesen.
+Es handelt sich um einige Bild-Dateien, die ich mit Drag-And-Drop aus Firefox nach Orgmode gezogen hatte.
+
+**** Lösung
+Ich suche diese Dateien und setze die Berechtigungen.
+Anschließend muss die Website mit org-publish neu generiert werden. 
+
+ #+begin_src bash
+ ### Handle Permissions.
+ cd ~/org/live-scripting
+ ## Find files that don't have read permission for others.
+ find images -user lubuntu \! -perm -o+r  -type f -exec ls -l {} \;
+ find images -user lubuntu \! -perm -o+r  -type f -exec touch {} \;
+ ## Add read permission for other
+ find images -user lubuntu \! -perm -o+r  -type f -exec chmod o+r {} \;
+ #+end_src
 
 
 
