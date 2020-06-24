@@ -1,5 +1,8 @@
-live-scripting    -*- mode: org; -*-
+-*- mode: org; -*-
 
+#+SETUPFILE: ~/org/org-html-themes/setup/theme-readtheorg-local.setup
+#+Options: \n:t
+#+Title: live-scripting
 
 
 * Einleitung 
@@ -593,4 +596,47 @@ Anschließend muss die Website mit org-publish neu generiert werden.
  #+end_src
 
 
+
+
+
+
+
+
+*** HTML Style Readtheorg
+Es gibt ein sehr gutes CSS basiertes Style-Sheet Framework für Org-Dateien. 
+Siehe: https://github.com/fniessen/org-html-themes
+Ich möchte das Thema ReadTheOrg benutzen und es lokal installieren. 
+
+#+begin_src bash
+### Clean update
+cd
+rm -rf ~/org/org-html-themes
+### Clone the Project
+cd org
+git clone https://github.com/fniessen/org-html-themes.git
+find~/org/org-html-themes
+### 
+#+end_src
+
+Um das die themes  zu benutzen, muss das Verzeichnis styles zur Website kopiert werden. 
+Dazu erweitere ich die Konfiguration in publish-project.el
+#+begin_src emacs-lisp
+       ("org-themes"
+        :base-directory "~/org/org-html-themes/styles"
+        :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|txt\\|mp3\\|ogg\\|swf"
+        :exclude ".git\\|LICENSE"
+        :publishing-directory "/var/www/html/live-scripting/styles"
+        :recursive t
+        :publishing-function org-publish-attachment
+        )
+#+end_src
+
+Das Thema wird angewendet durch die folgende Directive SETUPFILE am Anfang der org-Datei:
+#+begin_src 
+#+SETUPFILE: ~/org/org-html-themes/setup/theme-readtheorg-local.setup
+#+Options: \n:t
+#+Title: live-scripting
+#+end_src
+
+Mit org-publish wird in dieser Datei jetzt das Style-sheet verwedent.
 
