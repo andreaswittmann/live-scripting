@@ -669,9 +669,6 @@ Now I want to swich from the original project to my fork. I have to change the d
 #+Title: live-scripting
 #+end_src
 
-;;#+HTML_HEAD: <style> #content{max-width:1800px;}</style>
-;;#+HTML_HEAD: <style> p{max-width:800px;}</style>
-;;#+HTML_HEAD: <style> li{max-width:800px;}</style
 
 
 
