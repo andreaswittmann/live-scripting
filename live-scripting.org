@@ -475,20 +475,21 @@ Zunächst lege ich das Verzeichniss für die Webroot an und vergebe Rechte um al
 
 #+begin_src bash
 ### Clean up 
-sudo rm -rf   /var/www/html/live-scripting
+sudo rm -rf   /var/www/html/orgweb/
+ham2burg
 ### create directoy for project live-scripting
-sudo mkdir -p   /var/www/html/live-scripting
+sudo mkdir -p   /var/www/html/orgweb
 ### nginx worker and lubuntu must  have access
-sudo chown lubuntu  /var/www/html/live-scripting
+sudo chown lubuntu  /var/www/html/orgweb/
 
-cd  /var/www/html/live-scripting
+cd  /var/www/html/orgweb
 ls -la
 
 ### Force regenerating the project
-rm -r  /var/www/html/live-scripting/*
-ls -la  /var/www/html/live-scripting
-find  /var/www/html/live-scripting
-cd ~/org/live-scripting
+rm -r  /var/www/html/orgweb/*
+ls -la  /var/www/html/orgweb
+find  /var/www/html/orgweb
+cd ~/org/
 find . -exec touch {} \;
 #+end_src
 
