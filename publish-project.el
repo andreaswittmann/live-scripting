@@ -34,7 +34,7 @@
         :publishing-function org-publish-attachment
         )
        ("org-themes"
-        :base-directory "~/org/org-html-themes/styles"
+        :base-directory "~/org/aw-org-html-themes/styles"
         :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|txt\\|mp3\\|ogg\\|swf"
         :exclude ".git\\|LICENSE"
         :publishing-directory "/var/www/html/live-scripting/styles"

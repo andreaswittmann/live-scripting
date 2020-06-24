@@ -1,6 +1,6 @@
 -*- mode: org; -*-
 
-#+SETUPFILE: ~/org/org-html-themes/setup/theme-readtheorg-local.setup
+#+SETUPFILE: ~/org/aw-org-html-themes/setup/theme-readtheorg-local.setup
 #+Options: \n:t
 #+Title: live-scripting
 
@@ -638,5 +638,40 @@ Das Thema wird angewendet durch die folgende Directive SETUPFILE am Anfang der o
 #+Title: live-scripting
 #+end_src
 
-Mit org-publish wird in dieser Datei jetzt das Style-sheet verwedent.
+Mit org-publish wird in dieser Datei jetzt das Style-sheet verwendet.
+
+
+** Integration of a org-html-themes fork 
+I have used the GitHub project org-html-themes for applying style sheets to my local website. Now I want to fork this project. I can than make local modifications to the themes. I also want to integrate it into my local website.
+
+*** Creating the fork
+
+ I use the GitHub GUI on the web to fork and rename the project to aw-org-html-themes: https://github.com/andreaswittmann/aw-org-html-themes
+
+Now, I make a local clone of the project.
+
+#+begin_src bash
+### Clean update
+cd
+rm -rf ~/org/aw-org-html-themes
+### Clone the Project
+cd org
+git clone https://github.com/andreaswittmann/aw-org-html-themes.git
+find ~/org/aw-org-html-themes
+### 
+#+end_src
+
+*** Using styles of the forked project.
+Now I want to swich from the original project to my fork. I have to change the directive SETUPFILE and the path in publish-project.el.
+#+begin_src 
+#+SETUPFILE: ~/org/aw-org-html-themes/setup/theme-readtheorg-local.setup
+#+Options: \n:t
+#+Title: live-scripting
+#+end_src
+
+;;#+HTML_HEAD: <style> #content{max-width:1800px;}</style>
+;;#+HTML_HEAD: <style> p{max-width:800px;}</style>
+;;#+HTML_HEAD: <style> li{max-width:800px;}</style
+
+
 
