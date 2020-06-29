@@ -733,7 +733,11 @@ find .
 
 ## create index.html from sitmap.html
 cp sitemap.html index.html 
-a
+
+## remove all symlinks, they are external and break github pages.
+cd ~/org/live-scripting/docs
+find . -type l 
+find . -type l -exec rm {} \;
 
 #+end_src
 
