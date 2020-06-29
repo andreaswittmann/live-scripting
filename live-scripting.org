@@ -1,3 +1,4 @@
+
 -*- mode: org; -*-
 
 #+SETUPFILE: ~/org/aw-org-html-themes/setup/theme-readtheorg-local.setup
@@ -11,7 +12,6 @@
 
 * Installation unter lubuntu
 Die Installation wird unter Lubuntu ausgeführt. Lubunut ist leichtgewichtig und eignet sich daher auch für virtuelle Machinen und Cloudumgebungen.
-
 
 ** Vorraussetzungen
 Es ist ein Linux mit einem graphischen Interface und einer GNU Emacs Installation notwenig, um Live-Scripting aufzusezten.
@@ -30,6 +30,7 @@ Distributor ID: Ubuntu
 Description:    Ubuntu 19.10
 Release:        19.10
 Codename:       eoan
+
 
 ### Install emacs
 lubuntu@lubuntu-pc:~$ sudo snap install emacs --classic
@@ -476,6 +477,7 @@ Zunächst lege ich das Verzeichniss für die Webroot an und vergebe Rechte um al
 #+begin_src bash
 ### Clean up 
 sudo rm -rf   /var/www/html/orgweb/
+sudo rm -rf   /var/www/html/
 ham2burg
 ### create directoy for project live-scripting
 sudo mkdir -p   /var/www/html/orgweb
@@ -642,14 +644,15 @@ Das Thema wird angewendet durch die folgende Directive SETUPFILE am Anfang der o
 Mit org-publish wird in dieser Datei jetzt das Style-sheet verwendet.
 
 
-** Integration of a org-html-themes fork 
-I have used the GitHub project org-html-themes for applying style sheets to my local website. Now I want to fork this project. I can than make local modifications to the themes. I also want to integrate it into my local website.
+** Multi-Project Website 
+I want to create a website that spans multiple git projects. 
+This website will be created and updated with a single command. It uses the recursive feature org org-publish. 
+It is implemented in publish-project.el in the orgweb definition.
 
-*** Creating the fork
-
- I use the GitHub GUI on the web to fork and rename the project to aw-org-html-themes: https://github.com/andreaswittmann/aw-org-html-themes
-
-Now, I make a local clone of the project.
+*** Creating the fork of org-html-themes
+I have used the GitHub project org-html-themes for applying style sheets to my local website. Now I want to fork this project. I can then make local modifications to the themes. I also want to integrate it into my local website.
+I use the GitHub GUI on the web to fork and rename the project to aw-org-html-themes: https://github.com/andreaswittmann/aw-org-html-themes
+I make a local clone of the project.
 
 #+begin_src bash
 ### Clean update
@@ -671,5 +674,37 @@ Now I want to swich from the original project to my fork. I have to change the d
 #+end_src
 
 
+*** Problem: the folder "style" is not found by the html files.
+The publish process does not respect the folder structure. It expects a style folder on the same directory level. The solution must take into account the option to replicate the static website to a server in the internet. 
+
+Write a function that is called by :completion-function. It gets the projectPropertyList as an argument. This list contains the publishingDirectory. The function will call a shell script that uses the publishingDirectory to handle the missing style directories.
 
 
+#+begin_src 
+lubuntu@lubuntu-pc:~/org/live-scripting$ cat foo.txt 
+(:base-directory ~/org/aw-org-html-themes/styles :base-extension css\|js\|png\|jpg\|jpeg\|gif\|pdf\|txt\|mp3\|ogg\|swf :exclude .git\|LICENSE :publishing-directory /var/www/html/orgweb/styles :completion-function myFunction :recursive t :publishing-function org-publish-attachment)
+#+end_src
+
+
+
+
+#+begin_src emacs-lisp
+
+;;(defun myFunction ()
+(setq projectPropertyList="foobar")
+(defun fixStyleFolder (projectPropertyList)
+  "This function call a shell function to fix the style folder in multi-project websites.
+  The local.setup Themes from org-html-themes require a styles directory on in the same folder.
+  We call a shell function to takes care of it. "
+  (interactive)
+  (message "fixStyleFolder called!")
+  (setq publishing-directory (plist-get projectPropertyList ':publishing-directory ))
+  (shell-command (format "pDIR=%s; echo \"${pDIR}\"" publishing-directory))
+  (shell-command (format "bash ~lubuntu/org/live-scripting/bin/fixStyleFolder.sh -c mycopy -d %s" publishing-directory))
+)
+
+
+#+end_src
+
+
+rsync

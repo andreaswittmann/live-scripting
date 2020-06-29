@@ -29,7 +29,8 @@
         :base-directory "~/org/"
         :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|txt\\|mp3\\|ogg\\|swf"
         :exclude ".git\\|LICENSE"
-        :publishing-directory "/var/www/html/orgweb/"
+        :include "styles"
+        :publishing-directory "/var/www/html/orgweb"
         :recursive t
         :publishing-function org-publish-attachment
         )
@@ -39,9 +40,21 @@
         :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|txt\\|mp3\\|ogg\\|swf"
         :exclude ".git\\|LICENSE"
         :publishing-directory "/var/www/html/orgweb/styles"
+        :completion-function fixStyleFolder
         :recursive t
         :publishing-function org-publish-attachment
         )
 
        ))
+;; Functioin to Handle style folder
+(defun fixStyleFolder (projectPropertyList)
+  "This function call a shell function to fix the style folder in multi-project websites.
+  The local.setup Themes from org-html-themes require a styles directory on in the same folder.
+  We call a shell function to takes care of it. "
+  (interactive)
+  (message "fixStyleFolder called!")
+  (setq publishing-directory (plist-get projectPropertyList ':publishing-directory ))
+  (shell-command (format "pDIR=%s; echo \"${pDIR}\"" publishing-directory))
+  (shell-command (format "bash ~lubuntu/org/live-scripting/bin/fixStyleFolder.sh -c mycopy -d %s" publishing-directory))
+)
 
