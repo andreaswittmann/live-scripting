@@ -716,15 +716,20 @@ This recreates the website with all attachments.
 *** Publish to github pages.
 I want to publish the static website orgweb to github pages. 
 There are different approaches explained on: https://help.github.com/en/github/working-with-github-pages
-I create docs directory as a symbolic link to my local webroot and publish the content using magit.
+
+I create docs directory and copy the site there. Then I commit and push it with magit.
 
 
 #+begin_src bash
 ### Creating a link.
 cd ~/org/live-scripting
+
+rm -rf  ~/org/live-scripting/docs
+mkdir -p  ~/org/live-scripting/docs
+cd ~/org/live-scripting/docs
+cp -r /var/www/html/orgweb .
 ls -la 
-ln -s /var/www/html/orgweb/ docs
-cd docs
+find .
 
 #+end_src
 
