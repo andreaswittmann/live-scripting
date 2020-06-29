@@ -1,1 +1,0 @@
-(:base-directory ~/org/aw-org-html-themes/styles :base-extension css\|js\|png\|jpg\|jpeg\|gif\|pdf\|txt\|mp3\|ogg\|swf :exclude .git\|LICENSE :publishing-directory /var/www/html/orgweb/styles :completion-function fixStyleFolder :recursive t :publishing-function org-publish-attachment)
