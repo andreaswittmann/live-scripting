@@ -26,14 +26,14 @@
         )
 
        ("orgweb-static"
-        :base-directory "~/org/"
+        :base-directory "~/org"
         :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|txt\\|mp3\\|ogg\\|swf"
         :exclude ".git\\|LICENSE"
-        :include "styles"
         :publishing-directory "/var/www/html/orgweb"
         :recursive t
         :publishing-function org-publish-attachment
         )
+
 
        ("orgweb-themes"
         :base-directory "~/org/aw-org-html-themes/styles"
