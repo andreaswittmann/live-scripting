@@ -727,9 +727,12 @@ cd ~/org/live-scripting
 rm -rf  ~/org/live-scripting/docs
 mkdir -p  ~/org/live-scripting/docs
 cd ~/org/live-scripting/docs
-cp -r /var/www/html/orgweb .
+cp -r /var/www/html/orgweb/* .
 ls -la 
 find .
+
+
+
 
 #+end_src
 
