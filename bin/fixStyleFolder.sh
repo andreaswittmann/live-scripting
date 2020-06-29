@@ -116,8 +116,8 @@ cmd02(){
 ### copy the input folder to all levels below
 mycopy()
 {
-    log_info "Funktion mycopy() called, with ARGUMENT: " $1
-    log_info "Funktion mycopy() called, with PUBLISHING_DIR: " $PUBLISHING_DIR
+    log_debug "Funktion mycopy() called, with ARGUMENT: " $1
+    log_debug "Funktion mycopy() called, with PUBLISHING_DIR: " $PUBLISHING_DIR
     DIR_LIST=$(find $(dirname $PUBLISHING_DIR) -name "*.html")
     # strip of filename and remove dublicates
     DIR_LIST=$(echo $DIR_LIST | xargs -n1 | xargs dirname | sort -u | xargs)

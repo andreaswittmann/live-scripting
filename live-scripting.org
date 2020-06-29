@@ -666,7 +666,7 @@ find ~/org/aw-org-html-themes
 #+end_src
 
 *** Using styles of the forked project.
-Now I want to swich from the original project to my fork. I have to change the directive SETUPFILE and the path in publish-project.el.
+Now I want to use my fork aw-org-html-themes. I have to change the directive SETUPFILE in all org-files and the base-directory path for the component orgweb-themes in publish-project.el.
 #+begin_src 
 #+SETUPFILE: ~/org/aw-org-html-themes/setup/theme-readtheorg-local.setup
 #+Options: \n:t
@@ -675,36 +675,56 @@ Now I want to swich from the original project to my fork. I have to change the d
 
 
 *** Problem: the folder "style" is not found by the html files.
-The publish process does not respect the folder structure. It expects a style folder on the same directory level. The solution must take into account the option to replicate the static website to a server in the internet. 
-
-Write a function that is called by :completion-function. It gets the projectPropertyList as an argument. This list contains the publishingDirectory. The function will call a shell script that uses the publishingDirectory to handle the missing style directories.
+The publish process does not respect the folder structure. It expects a style folder on the same directory level. The solution must take into account the option to replicate the static website to a server on the internet. 
 
 
-#+begin_src 
-lubuntu@lubuntu-pc:~/org/live-scripting$ cat foo.txt 
-(:base-directory ~/org/aw-org-html-themes/styles :base-extension css\|js\|png\|jpg\|jpeg\|gif\|pdf\|txt\|mp3\|ogg\|swf :exclude .git\|LICENSE :publishing-directory /var/www/html/orgweb/styles :completion-function myFunction :recursive t :publishing-function org-publish-attachment)
-#+end_src
-
-
+I write the emacs-lisp  function "fixStyleFolder". It is called by :completion-function. It gets the projectPropertyList as an argument. This list contains the publishingDirectory. The function will call the shell script fixStyleFolder.sh that which creates symbolic links in all sub folders.
 
 
 #+begin_src emacs-lisp
+;; Example for projectPropertyList
+(:base-directory ~/org/aw-org-html-themes/styles :base-extension css\|js\|png\|jpg\|jpeg\|gif\|pdf\|txt\|mp3\|ogg\|swf :exclude .git\|LICENSE :publishing-directory /var/www/html/orgweb/styles :completion-function myFunction :recursive t :publishing-function org-publish-attachment)
+#+end_src
 
-;;(defun myFunction ()
-(setq projectPropertyList="foobar")
-(defun fixStyleFolder (projectPropertyList)
-  "This function call a shell function to fix the style folder in multi-project websites.
-  The local.setup Themes from org-html-themes require a styles directory on in the same folder.
-  We call a shell function to takes care of it. "
-  (interactive)
-  (message "fixStyleFolder called!")
-  (setq publishing-directory (plist-get projectPropertyList ':publishing-directory ))
-  (shell-command (format "pDIR=%s; echo \"${pDIR}\"" publishing-directory))
-  (shell-command (format "bash ~lubuntu/org/live-scripting/bin/fixStyleFolder.sh -c mycopy -d %s" publishing-directory))
-)
+The emacs-lisp function fixStyleFolder is contained in the file publish-project.sh.
+The shell script is located at ~/org/live-scripting/bin/fixStyleFolder.sh
 
+*** Updating the orgweb site 
+The orgweb site can be updated with org-publish.
+| Emacs Command                          | Description                                |
+|----------------------------------------+--------------------------------------------|
+| M-x org-publish-project RET orgweb RET | Create or Update all components of orgweb. |
+
+Cleaning up and recreating everything.
+#+begin_src bash
+### Force regenerating the project
+## Delete Webroot
+rm -r  /var/www/html/orgweb/*
+ls -la  /var/www/html/orgweb
+## touch all org files.
+cd ~/org/
+find . -exec touch {} \;
+
+## use org-publish-project to recreate all.
+## check 
+find  /var/www/html/orgweb/
 
 #+end_src
 
+This recreates the website with all attachments.
 
-rsync
+*** Publish to github pages.
+I want to publish the static website orgweb to github pages. 
+There are different approaches explained on: https://help.github.com/en/github/working-with-github-pages
+I create docs directory as a symbolic link to my local webroot and publish the content using magit.
+
+
+#+begin_src bash
+### Creating a link.
+cd ~/org/live-scripting
+ls -la 
+ln -s /var/www/html/orgweb/ docs
+cd docs
+
+#+end_src
+

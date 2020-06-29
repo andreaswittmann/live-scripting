@@ -411,7 +411,7 @@ you should place your code here."
    (quote
     ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(evil-want-Y-yank-to-eol nil)
- '(ispell-dictionary "deutsch")
+ '(ispell-dictionary "en_US")
  '(ispell-program-name "/usr/bin/hunspell")
  '(org-download-image-dir "images")
  '(org-download-method (quote directory))

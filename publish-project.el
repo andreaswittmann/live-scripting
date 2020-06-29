@@ -46,9 +46,9 @@
         )
 
        ))
-;; Functioin to Handle style folder
+;; Function to Handle style folder
 (defun fixStyleFolder (projectPropertyList)
-  "This function call a shell function to fix the style folder in multi-project websites.
+  "This function calls a shell function to fix the style folder in multi-project websites.
   The local.setup Themes from org-html-themes require a styles directory on in the same folder.
   We call a shell function to takes care of it. "
   (interactive)
