@@ -739,5 +739,12 @@ cd ~/org/live-scripting/docs
 find . -type l 
 find . -type l -exec rm {} \;
 
+## create symlinks manually
+cd ~/org/live-scripting/docs/live-scripting
+ls -la 
+ln -s ../styles styles
+
+
+
 #+end_src
 
