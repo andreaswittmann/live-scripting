@@ -731,8 +731,9 @@ cp -r /var/www/html/orgweb/* .
 ls -la 
 find .
 
-
-
+## create index.html from sitmap.html
+cp sitemap.html index.html 
+a
 
 #+end_src
 
