@@ -25,16 +25,17 @@ show_usage()
         echo "Options:"
         echo "  -c <Command>, command are:"
         echo "    mytest - test function for this script."
-        echo "    mycopy - copy the publishing dir to all subfolders."
+        echo "    mycopy - link the publishing dir to all sub-folders."
         echo "  -d <directory>"
-        echo "    directory - This is the publishing directory"
+        echo "    directory - This is the publishing directory that should be linked. "
         echo "  -L <Loglevel>, sets the log level of this script.:"
         echo "    DEBUG - set logging to the finest level."
         echo "    INFO - set logging to info, which is the default."
         echo "    WARN - set logging to warn."
         echo "    DEBUG - set logging to debug."
         echo "Example:"
-        echo "    $0 -c mytest -L DEBUG"
+        echo "    $0 -c mycopy -d /var/www/html/orgweb/styles -L DEBUG"
+        echo "    $0 -c mycopy -d /var/www/html/orgweb/styles"
 }
     
 #==============================================================================
@@ -58,7 +59,7 @@ RETAIN_NUM_LINES=100000
 LOG_LEVEL=1
 
 function logsetup {
-    
+
     TMP=$(tail -n $RETAIN_NUM_LINES $LOGFILE 2>/dev/null) && echo "${TMP}" > $LOGFILE
     exec > >(tee -a $LOGFILE)
     exec 2>&1
@@ -128,26 +129,31 @@ mycopy()
     #echo $DIR_LIST
  
 }
-### Helper Function that takes first argument dir and copies it to second dir.
+### Helper Function that makes relatives links. TARGET_DIR must be sub-path of SOURCE_DIR
 mycopy_helper()
 {
     TARGET_DIR=$1 # e.g. /var/www/html/orgweb/styles
     SOURCE_DIR=$2 # e.g /var/www/html/orgweb/live-scripting
     LINK_NAME=$(basename $TARGET_DIR) # e.g. styles
-    log_info "Funktion mycopy_helper() called, with TARGET_DIR: " $TARGET_DIR
-    log_info "Funktion mycopy_helper() called, with SOURCE_DIR: " $SOURCE_DIR
-    log_info "Funktion mycopy_helper() called, with LINK_NAME: " $LINK_NAME
+    log_debug "Funktion mycopy_helper() called, with TARGET_DIR: " $TARGET_DIR
+    log_debug "Funktion mycopy_helper() called, with SOURCE_DIR: " $SOURCE_DIR
+    log_debug "Funktion mycopy_helper() called, with LINK_NAME: " $LINK_NAME
 
     ### Don't create link to itself.
     OMIT_DIR=$(dirname $TARGET_DIR)
     if [[ "$OMIT_DIR" != "$SOURCE_DIR" ]]; then
         cd $SOURCE_DIR
-        log_info "Executing: ln -s " $LINK_NAME $TARGET_DIR
+        # convert absolute path in relative path
+        # e.g /var/www/html/orgweb/styles becomes ../../styles  if we are 2 levels deeper down in the directory
+        TARGET_DIR=$(realpath --relative-to=. $OMIT_DIR)/$LINK_NAME
+        # create symbolic links
+        log_info "Executing: ln -s " $TARGET_DIR $LINK_NAME
         ln -s $TARGET_DIR $LINK_NAME
     else
         log_warn "Target and Source are equal, preventing link loop! "
     fi
 }
+
 
 
 #==============================================================================

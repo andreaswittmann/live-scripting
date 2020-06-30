@@ -339,10 +339,11 @@ git push -v
 
 Die folgende Abbildung zeigt, wie man den öffentlichen Schlüssel zum GitHub Projekt hinzufügt, um mit SSH darauf zugreifen zu können.
 
-
-#+DOWNLOADED: file:///tmp/VW5DH/2020-06-21_17-15-37.png @ 2020-06-21 17:34:52
+#+DOWNLOADED: file:///home/lubuntu/org/live-scripting/docs/live-scripting/data/8e/92dbc8-3003-4938-9093-885bc40197a6/2020-06-21_17-34-52_2020-06-21_17-15-37.png @ 2020-06-30 10:26:47
 #+Caption: Öffentlichen Schlüssel zum GitHub Projekt hinzufügen.
-[[attachment:2020-06-21_17-34-52_2020-06-21_17-15-37.png]]
+[[file:images/Installation_unter_lubuntu/2020-06-30_10-26-47_2020-06-21_17-34-52_2020-06-21_17-15-37.png]]
+
+
 
 *** Konfiguration von org-download                                   :ATTACH:
     :PROPERTIES:
@@ -356,7 +357,10 @@ Dazu muss die Variable org-download-method per Customization angepasst werden.
 
 #+DOWNLOADED: file:///tmp/DOS33/2020-06-21_17-51-44.png @ 2020-06-21 17:52:54
 #+Caption: Customization von org-download-method um auf org-attach umzustellen.
-[[attachment:2020-06-21_17-52-54_2020-06-21_17-51-44.png]]
+[[attachment:2020-06-21_17-52-54_2020-06-21_17-51-44.png]
+
+
+
 
 
 *** Adobe Font Source Code Pro installieren
@@ -673,7 +677,6 @@ Now I want to use my fork aw-org-html-themes. I have to change the directive SET
 #+Title: live-scripting
 #+end_src
 
-
 *** Problem: the folder "style" is not found by the html files.
 The publish process does not respect the folder structure. It expects a style folder on the same directory level. The solution must take into account the option to replicate the static website to a server on the internet. 
 
@@ -713,38 +716,126 @@ find  /var/www/html/orgweb/
 
 This recreates the website with all attachments.
 
-*** Publish to github pages.
+** Publish to github pages.
 I want to publish the static website orgweb to github pages. 
 There are different approaches explained on: https://help.github.com/en/github/working-with-github-pages
 
-I create docs directory and copy the site there. Then I commit and push it with magit.
+*** Publish to docs folder
+
+ I create docs directory and copy the site there. Then I commit and push it with magit.
+ #+begin_src bash
+   ### Creating a link.
+   cd ~/org/live-scripting
+
+   rm -rf  ~/org/live-scripting/docs
+   mkdir -p  ~/org/live-scripting/docs
+   cd ~/org/live-scripting/docs
+   cp -r /var/www/html/orgweb/* .
+   ls -la 
+   find .
+
+   ## create index.html from sitmap.html
+   cp sitemap.html index.html 
+
+   ## remove all symlinks, they are external and break github pages.
+   cd ~/org/live-scripting/docs
+   find . -type l 
+   find . -type l -exec rm {} \;
+
+   ## create symlinks manually
+   cd ~/org/live-scripting/docs/live-scripting
+   ls -la 
+   ln -s ../styles styles
+
+ #+end_src
+ Ok, this works.
+ The site is online at: https://andreaswittmann.github.io/live-scripting/sitemap.html
+ The site is online at: https://andreaswittmann.github.io/live-scripting/live-scripting/live-scripting.html
+ The style sheet is loaded. The PDF attachments are available as well.
+
+*Conlclusion:*
+It is possible to publish the project to the docs folder in Github, thus demonstrating the capability of org-publish to create a static web site, including style sheets and attachments. However there are some aspects that I don't like. First, since this is a multi-project website, the publish site shouldn't really be inside the project live-scripting but be a project on it's own. Second, I don't like the idea of copying the project from the publish site to the docs directory, thus duplicating all files. This was necessary because git doesn't follow symbolic link. 
+
+*** Publish to a project
+In this approach the published website becomes it's own GitHub project. 
+
+**** Activities
+There are the following activities:
+- [X] Create new GitHub Project orgweb.
+- [X] Clone orgweb to local publish site.
+- [X] Insert public key on GitHub to push without password
+- [X] Use org-publish to create the project.
+- [X] Use Magit to publish site to GitHub
+- [ ] Write script to automatically commit on push on every org-publish
+- [ ] Update FixStyleFolder to use relative links.
+
+That's it. 
+
+**** GitHub Project orgweb. 
 
 
-#+begin_src bash
-### Creating a link.
-cd ~/org/live-scripting
+#+begin_src  bash
+### Clean up and clone Website.
+sudo rm -rf /var/www/html/orgweb/
+ham2burg
+cd /var/www/html/
+ls -la
 
-rm -rf  ~/org/live-scripting/docs
-mkdir -p  ~/org/live-scripting/docs
-cd ~/org/live-scripting/docs
-cp -r /var/www/html/orgweb/* .
-ls -la 
-find .
+sudo git clone https://github.com/andreaswittmann/orgweb.git
+sudo chown -R lubuntu:lubuntu  /var/www/html/orgweb/
+cd /var/www/html/orgweb/
 
-## create index.html from sitmap.html
-cp sitemap.html index.html 
-
-## remove all symlinks, they are external and break github pages.
-cd ~/org/live-scripting/docs
+### Fix symbolic links
 find . -type l 
-find . -type l -exec rm {} \;
 
-## create symlinks manually
-cd ~/org/live-scripting/docs/live-scripting
-ls -la 
+## one level
+cd /var/www/html/orgweb/./styles/
+cd /var/www/html/orgweb/./live-scripting/
+rm styles
 ln -s ../styles styles
+ls -la 
+ls styles
 
+## two levels
+cd /var/www/html/orgweb/./aw-org-html-themes/demo/
+cd /var/www/html/orgweb/./aw-org-html-themes/styles/
+cd /var/www/html/orgweb/./live-scripting/moreorg/
+rm styles
+ln -s ../../styles styles
+ls -la 
+ls styles
 
+## three levels
+cd /var/www/html/orgweb/./aw-org-html-themes/styles/readtheorg
+rm styles
+ln -s ../../../styles styles
+ls -la 
+ls styles
 
+### GitHub authentication
+cat ~/.ssh/id_rsa_github.pub
+cd ~/org/live-scripting
+git remote -v
+
+cd ~/org/aw-org-html-themes
+git remote set-url origin ssh://git@github.com/andreaswittmann/aw-org-html-themes  
+git remote -v
+git push
+
+cd /var/www/html/orgweb/
+git remote -v
+git remote set-url origin ssh://git@github.com/andreaswittmann/orgweb   
+
+git fetch
+git push
 #+end_src
+
+
+The site can be found at: https://andreaswittmann.github.io/orgweb/sitemap.html
+
+
+
+
+
+
 

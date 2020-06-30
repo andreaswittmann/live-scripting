@@ -416,6 +416,7 @@ you should place your code here."
  '(org-download-image-dir "images")
  '(org-download-method (quote directory))
  '(org-export-with-broken-links (quote mark))
+ '(org-sidebar-tree-jump-fn (quote org-sidebar-tree-jump-source))
  '(org-use-speed-commands t)
  '(package-selected-packages
    (quote
