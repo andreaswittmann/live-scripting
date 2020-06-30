@@ -328,8 +328,23 @@ Host github.com
 EOF
  cat  ~/.ssh/config
 
-### Copy the public Key to github
+### Copy the public Key to github via web gui
 cat ~/.ssh/id_rsa_github.pub
+
+### Prepare projects
+cat ~/.ssh/id_rsa_github.pub
+cd ~/org/live-scripting
+git remote set-url origin ssh://git@github.com/andreaswittmann/live-scripting
+git remote -v
+
+cd ~/org/aw-org-html-themes
+git remote set-url origin ssh://git@github.com/andreaswittmann/aw-org-html-themes  
+git remote -v
+git push
+
+cd /var/www/html/orgweb/
+git remote -v
+git remote set-url origin ssh://git@github.com/andreaswittmann/orgweb   
 
 ### Check git operations
 git pull -v 
@@ -767,7 +782,7 @@ There are the following activities:
 - [X] Use org-publish to create the project.
 - [X] Use Magit to publish site to GitHub
 - [ ] Write script to automatically commit on push on every org-publish
-- [ ] Update FixStyleFolder to use relative links.
+- [X] Update FixStyleFolder to use relative links.
 
 That's it. 
 
@@ -810,29 +825,12 @@ cd /var/www/html/orgweb/./aw-org-html-themes/styles/readtheorg
 rm styles
 ln -s ../../../styles styles
 ls -la 
-ls styles
-
-### GitHub authentication
-cat ~/.ssh/id_rsa_github.pub
-cd ~/org/live-scripting
-git remote -v
-
-cd ~/org/aw-org-html-themes
-git remote set-url origin ssh://git@github.com/andreaswittmann/aw-org-html-themes  
-git remote -v
-git push
-
-cd /var/www/html/orgweb/
-git remote -v
-git remote set-url origin ssh://git@github.com/andreaswittmann/orgweb   
-
-git fetch
-git push
 #+end_src
 
 
 The site can be found at: https://andreaswittmann.github.io/orgweb/sitemap.html
 
+[2020-06-30 Di 17:36]
 
 
 
