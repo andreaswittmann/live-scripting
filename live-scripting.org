@@ -830,10 +830,49 @@ ls -la
 
 The site can be found at: https://andreaswittmann.github.io/orgweb/sitemap.html
 
-[2020-06-30 Di 17:36]
+An update of the site includes three steps:
+1. org-publish orgweb
+2. magit or git: add and commit files in project orgweb
+3. git push project orgweb.
+
+***** Troubleshooting
+After pushing the project orgweb, GitHub starts a jykell Process to publish the site. 
+This my lead to an error, send via email. Unfortunately the message very often is just useless like this.
+There are no additional information.
+#+begin_example
+Error: The page build failed for the `master` branch with the following error:
+#+end_example
 
 
 
+
+
+  [2020-06-30 Di 17:36]
+
+
+***** Rebuild the website.
+
+#+begin_src bash
+
+cd /var/www/html/orgweb/
+## find all generated files and remove them, exclude .git 
+find . -maxdepth 1  ! -name .git ! -name README.md 
+find . -maxdepth 1  ! -name .git ! -name README.md -exec rm -rf {} \;
+ll
+
+## removing files
+git add .
+git status
+git commit -m "Resetting project"
+git push
+
+# touch all file to qualify for regenerating the web
+cd ~/org
+ll
+find . ! -name sitemap.org  -exec touch {} \;
+### regenerate web in emacs with org-publish-project orgweb
+
+#+end_src
 
 
 
