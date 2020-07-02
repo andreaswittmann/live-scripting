@@ -732,6 +732,7 @@ find  /var/www/html/orgweb/
 This recreates the website with all attachments.
 
 ** Publish to github pages.
+(Don't do it! Read the conclusion)
 I want to publish the static website orgweb to github pages. 
 There are different approaches explained on: https://help.github.com/en/github/working-with-github-pages
 
@@ -845,13 +846,9 @@ Error: The page build failed for the `master` branch with the following error:
 
 
 
+**** Rebuilding the website.
 
-
-  [2020-06-30 Di 17:36]
-
-
-***** Rebuild the website.
-
+These are the steps to rebuild the website completely
 #+begin_src bash
 
 cd /var/www/html/orgweb/
@@ -873,6 +870,106 @@ find . ! -name sitemap.org  -exec touch {} \;
 ### regenerate web in emacs with org-publish-project orgweb
 
 #+end_src
+
+*** Conclusion
+While it looks tempting to publish to github pages I have to advice against it. 
+I managed to publish the website orgweb several times but also often ran into errors. 
+The information provided to resolve the errors is not sufficient. This results in frustrating and time consuming analysis sessions. It is a waste of time.
+The Pages feature in github up to now [2020-06-30 Di] is not mature enough to be used in real world projects!
+Other publishing options like web servers or Amazon S3 will be explored.
+
+** Publish to Amazon S3
+Amazon S3 is a storage service that includes basic webserver capabilities. It can host static websites, but doesn't not allow for https and authentication. This is fine for this project.
+
+**** Installation of aws-cli and bucket creation
+I need the the command line client from aws to access s3 buckets. I want to install aws-cli version 2.
+I follow instructions from https://docs.aws.amazon.com/de_de/cli/latest/userguide/install-cliv2-linux.html
+
+#+begin_src bash
+mkdir ~/Downloads/aws-cli
+cd ~/Downloads/aws-cli
+ls -la
+## we need curl
+sudo apt install curl
+ham2burg
+
+## install aws-cli
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+aws --version
+# aws-cli/2.0.27 Python/3.7.3 Linux/5.3.0-61-generic botocore/2.0.0dev31
+
+### install profile and credentials for aws
+cat ~/.aws/config
+cat ~/.aws/credentials
+
+### Test s3 access
+export AWS_PROFILE=anwi-gmbh
+aws s3 ls
+
+### Creating a buckets, prepare website hosting on aws gui in the browser
+aws s3 mb s3://live-scripting
+aws s3 ls s3://live-scripting --recursive
+
+### Sync website to 
+cd /var/www/html/orgweb
+pwd
+find . 
+ls -la
+aws s3 sync /var/www/html/orgweb s3://live-scripting --delete 
+
+
+### fix wrong links
+mkdir ~/temp
+cd ~/temp
+cp /var/www/html/orgweb/sitemap.html .
+ls -la
+aws s3 sync . s3://live-scripting --delete 
+
+
+#+end_src
+
+Ok.
+
+The website is available at http://live-scripting.s3-website.eu-central-1.amazonaws.com
+/sitemap.html
+
+**** Sync orgweb to s3 bucket.
+The aws cli contains 
+
+Problem: on the second run the link /var/www/html/orgweb/styles/styles is created but shouldn't
+Analysis: This happens only on the second run of the script.
+It also happens in subsequent identical calls to ln
+I don't know why this happens.
+Solution: Defensive code: check before creating link.
+
+#+begin_src bash
+## run script 
+##----------------------------------------------------------------------------------------------- 
+ ~/org/live-scripting/bin/fixStyleFolder.sh -c mycopy -d /var/www/html/orgweb/styles -L DEBUG
+
+## check resuclt 
+cd /var/www/html/orgweb/styles/
+find /var/www/html/orgweb/ -type l -exec rm {} \;
+find /var/www/html/orgweb/ -type l
+find /var/www/html/orgweb/ -type d
+
+
+## executing ln two times produes error
+cd   /var/www/html/orgweb/aw-org-html-themes/demo 
+pwd  /var/www/html/orgweb/aw-org-html-themes/demo 
+ls -la
+ln -s  ../../styles styles             
+
+mkdir -p  /var/www/html/orgweb/aw-org-html-themes/foobar
+cd   /var/www/html/orgweb/aw-org-html-themes/foobar
+ls -la
+ln -s  ../../styles styles             
+ 
+#+end_src
+
 
 
 

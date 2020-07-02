@@ -119,41 +119,58 @@ mycopy()
 {
     log_debug "Funktion mycopy() called, with ARGUMENT: " $1
     log_debug "Funktion mycopy() called, with PUBLISHING_DIR: " $PUBLISHING_DIR
-    DIR_LIST=$(find $(dirname $PUBLISHING_DIR) -name "*.html")
+    # We want to start the find in the web root. This is one dir before the styles directory.
+    # E.g. /var/www/html/orgweg
+    WEB_ROOT=$(dirname $PUBLISHING_DIR)
+    ## clean all links first
+    log_debug "Deleting Links: " $(find $WEB_ROOT -type l)
+    find ${WEB_ROOT} -type l -exec rm {} \;
+
+    # The styles folder is required in all dirs containing html files.
+    DIR_LIST=$(find $WEB_ROOT -name "*.html")
     # strip of filename and remove dublicates
     DIR_LIST=$(echo $DIR_LIST | xargs -n1 | xargs dirname | sort -u | xargs)
 
+    echo $DIR_LIST
     for i in $DIR_LIST; do
         mycopy_helper $PUBLISHING_DIR $i
     done
-    #echo $DIR_LIST
  
 }
 ### Helper Function that makes relatives links. TARGET_DIR must be sub-path of SOURCE_DIR
 mycopy_helper()
 {
-    TARGET_DIR=$1 # e.g. /var/www/html/orgweb/styles
-    SOURCE_DIR=$2 # e.g /var/www/html/orgweb/live-scripting
+    export TARGET_DIR=$1 # e.g. /var/www/html/orgweb/styles
+    export SOURCE_DIR=$2 # e.g /var/www/html/orgweb/live-scripting
     LINK_NAME=$(basename $TARGET_DIR) # e.g. styles
+    log_debug "Funktion mycopy_helper() called, with TARGET_DIR: " $1
     log_debug "Funktion mycopy_helper() called, with TARGET_DIR: " $TARGET_DIR
+    log_debug "Funktion mycopy_helper() called, with SOURCE_DIR: " $2
     log_debug "Funktion mycopy_helper() called, with SOURCE_DIR: " $SOURCE_DIR
     log_debug "Funktion mycopy_helper() called, with LINK_NAME: " $LINK_NAME
 
     ### Don't create link to itself.
     OMIT_DIR=$(dirname $TARGET_DIR)
+    cd $OMIT_DIR
     if [[ "$OMIT_DIR" != "$SOURCE_DIR" ]]; then
+        log_info "cd   $SOURCE_DIR"
         cd $SOURCE_DIR
         # convert absolute path in relative path
         # e.g /var/www/html/orgweb/styles becomes ../../styles  if we are 2 levels deeper down in the directory
         TARGET_DIR=$(realpath --relative-to=. $OMIT_DIR)/$LINK_NAME
+        cd $SOURCE_DIR
         # create symbolic links
+        log_info "pwd " $(pwd)
         log_info "Executing: ln -s " $TARGET_DIR $LINK_NAME
         ln -s $TARGET_DIR $LINK_NAME
     else
         log_warn "Target and Source are equal, preventing link loop! "
     fi
-}
+    log_debug "Restting Vars!"
+    export TARGET_DIR=
+    export SOURCE_DIR=
 
+}
 
 
 #==============================================================================

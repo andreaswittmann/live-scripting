@@ -394,7 +394,8 @@ you should place your code here."
   ;; Lade die Konfiguraiton für org-publish
   (load-file "~/org/live-scripting/publish-project.el")
 
-
+  ;; Positioniere neotree auf der rechten Seite, damit org-sidebar-tree auf die linke kann.
+  (setq neo-window-position 'right)
 
 
   )

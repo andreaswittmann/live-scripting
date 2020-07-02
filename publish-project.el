@@ -36,6 +36,8 @@
 
 
        ("orgweb-themes"
+        ;; copy the contents of the style folder to the style folder at the web root.
+        ;; Then create links on every level.
         :base-directory "~/org/aw-org-html-themes/styles"
         :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|txt\\|mp3\\|ogg\\|swf"
         :exclude ".git\\|LICENSE"
@@ -44,7 +46,6 @@
         :recursive t
         :publishing-function org-publish-attachment
         )
-
        ))
 ;; Function to Handle style folder
 (defun fixStyleFolder (projectPropertyList)
