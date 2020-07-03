@@ -1,29 +1,22 @@
-
--*- mode: org; -*-
-
 #+SETUPFILE: ~/org/aw-org-html-themes/setup/theme-readtheorg-local.setup
 #+Options: \n:t
 #+Title: live-scripting
 
-
 * Introduction
-Live-Scripting is an approach to combine work in IT projects, documentation and retrieval. 
-Very much like test-driven development, live-scripting documents work in command shells, while doing it.
+Live-Scripting is an approach to combine work in IT projects, documentation and information retrieval. 
+Very much like test-driven development combines testing and coding, live-scripting documents work in command shells, while doing it.
 
 ** The Problem
-Since more than 30 years, and even now, IT-work in many case is command shell centric. For many IP professionals the bash or other shells constitute a major part of there work. Often quite sophisticated commands are constructed during problem resolution. Normally these commands are deleted at the end of a session. When similar problems arise days or weeks later, often very similar analysis and solutions steps are pursued again. If documentation of the work is required, it is usually an extra time consuming task. It would be nice if we could document this work in an easy way for ourselves and others. This must include an  easy and effective search method to quickly find previous solutions.
+Since more than 30 years, and even now, IT-work in many case is command shell centric. For many IP professionals the bash or other shells constitute a major part of there work. Sophisticated commands are constructed during problem resolution. Normally these commands are deleted at the end of a session. When similar problems arise days or weeks later, similar analysis and solutions steps are repeated again. If documentation of the work is required, it is an extra time consuming task. We wish to document this work in an easy way for ourselves and others. This should include an effective search method to quickly find documented information.
 
 ** The live-scripting approach
-Live-scripting is a work methodology based on emacs, which documents work on the command shell while doing it. Instead of entering and executing one command at a time, in live-scripting we use two windows side by side: An editor and a shell. The commands in the editor can then be executed with single key shortcut in the adjacent shell. This similar to a debugging session where can step through code, but more simple. In the editor we can jump between commands, repeat them in any order we like, duplicate and modify them. The editor is saved into a text file at the end of the session. 
+Live-scripting is a work methodology based on emacs, which documents work on the command shell while doing it. Instead of entering and executing one command at a time, in live-scripting we use two windows side by side: An editor and a shell. The commands in the editor can then be executed with a single key shortcut in the adjacent shell. This is similar to a debugging session where we can step through code during execution. In the emacs editor we can jump between commands, repeat them in any order, duplicate and modify them. The editor is saved into a text file at the end of the session. 
 
 ** Emacs org-mode
-Emacs is the ideal tool for it. The ansi-term provides for a robust shell interface within emacs. Since it is an programmable environment the functions to send a line of code to the ansi-term can easily be added. Furthermore the org-mode module is an emacs killer app on its own, adding many features to organize, format and publish the work. The the very heart, org-mode is a mark-up language similar to markdown, put much more powerful. Emacs provides elaborated search capabilities across files and projects. The magit module is a highly praised interface to git. The fact that most files are plain text invites the storage in a source code control system like git. But org-mode an also handle pictures to add screenshots and other attachments for other file types like PDFs. org-mode together with a couple of other emacs modules constitute a cross-media publishing machine which makes it very easy to export to HTML, PDF, Markdown, Confluence, and more. 
+Emacs is the ideal tool for it. The *ansi-term* provides for a robust shell interface within emacs. Since it is an programmable environment the functions to send a line of code to the ansi-term can be added. Furthermore the *org-mode* module is an emacs *killer app* on its own, adding many features to organize, format and publish the work. At it's core, org-mode is a mark-up language similar to markdown, put much more powerful. Emacs provides elaborated search capabilities across files and projects. The *magit* module is a highly praised interface to git. The fact that most files are plain text invites the storage in a source code control system like *git*. But org-mode can also handle pictures to add screenshots and attachments for file types like PDFs and others. org-mode together with a couple of other emacs modules constitute a cross-media publishing machine which makes it easy to export to HTML, PDF, Markdown, Confluence, and more. 
 
 ** Multi Project Website 
-Live-scripting, as it is presented here, is a configuration that spans multiple projects and publishes the org-files and attachments to a single static website. This can be used locally or be synchronized to an web server in an intranet or on the internet. The web site contains a search pages for the whole site based on lunr, which provides a full text search index to find information across different pages and projects.  
-
-
-
+Live-scripting, as it is presented here, is a configuration that spans multiple projects and publishes the org-files and attachments to a single static website. This can be used locally or be synchronized to a web server in an intranet or on the internet. The web site contains a search pages for the whole site based on *lunr*, which provides a full text search index to find information across different pages and projects.  
 
 * Installation unter lubuntu
 Die Installation wird unter Lubuntu ausgeführt. Lubunut ist leichtgewichtig und eignet sich daher auch für virtuelle Machinen und Cloudumgebungen.
@@ -784,7 +777,7 @@ There are different approaches explained on: https://help.github.com/en/github/w
  The site is online at: https://andreaswittmann.github.io/live-scripting/live-scripting/live-scripting.html
  The style sheet is loaded. The PDF attachments are available as well.
 
-*Conlclusion:*
+*Summary:*
 It is possible to publish the project to the docs folder in Github, thus demonstrating the capability of org-publish to create a static web site, including style sheets and attachments. However there are some aspects that I don't like. First, since this is a multi-project website, the publish site shouldn't really be inside the project live-scripting but be a project on it's own. Second, I don't like the idea of copying the project from the publish site to the docs directory, thus duplicating all files. This was necessary because git doesn't follow symbolic link. 
 
 *** Publish to a project
@@ -1040,5 +1033,57 @@ ln -s  ../../styles styles
 
 Test URL: http://localhost/orgweb/sitemap.html
 
+** Automation of Publishing Process
+This includes following steps:
+1. Publish to local website.
+2. Update lunr search index.
+3. Sync to public website on S3.
+
+*** Publishing with script publish.sh
+
+ The first task involves running emacs in batch mode and executing org-publish.
+ Then I will use the awscli to sync the website to S3.
+ These steps will be implemented in the script ~/org/live-scripting/bin/publish.sh
 
 
+ #+begin_src bash
+ ### Publish to local website via script.
+ ~/org/live-scripting/bin/publish.sh -c publish -L DEBUG         
+# If this call complains about a read lock, close emacs and start from a terminal. 
+
+### extending PATH in .profile
+# extend path to include custom scripts
+export PATH=~/org/live-scripting/bin:${PATH}
+
+## The publish process can be started with: 
+publish.sh -c publish 
+
+
+ #+end_src
+
+*** Problem syntax highlighting is poor
+The syntax highlighting for the bash source code blocks look poor when using the script publish.sh.
+Analysis: 
+This is complicated. Puh. 
+This problem is discussed at https://emacs.stackexchange.com/questions/31439/how-to-get-colored-syntax-highlighting-of-code-blocks-in-asynchronous-org-mode-e
+In short, the module responsible for formatting code snippets, htmlize, is configured differently in both situations.
+Solution:
+1. Set variables in publish-config.el:
+#+begin_src emacs-lisp
+(setq org-export-with-broken-links t)
+(setq org-html-htmlize-output-type 'css)
+#+end_src
+2. Create syntax.css using "M-x org-html-htmlize-generate-css" in emacs. 
+3. Edit the setup-file to load syntax.css
+4. Distribute syntax.css together with the other style sheet files.
+
+The result can be observed in the following sequence of pictures.
+The first one shows the publishing result from within emacs unsing M-x org-publish-project. 
+The second shows the result of publishing in emacs batch mode without modifications of this solution.
+The third pictures shows the result of publishing in emacs batch mode with this solution applied.
+
+#+DOWNLOADED: file:///tmp/1MDKM/2020-07-03_21-01-27.png @ 2020-07-03 21:03:36
+#+caption: Differences in syntax highlighting depending on publish method.
+[[file:images/Installation_unter_lubuntu/2020-07-03_21-03-36_2020-07-03_21-01-27.png]]
+
+Ok. While this solutions solves the problem, more work could be done to fine tune the style sheets.

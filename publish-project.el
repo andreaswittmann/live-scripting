@@ -1,12 +1,20 @@
 ;; Eval mit C-x C-e am Zeilenende
 ;; Publisch mit M-x org-publish-project RET org RET
-
+(package-initialize)
+(require 'org)
+(require 'ox)
 (require 'ox-publish)
+;;(require 'htmlize)
+;;(require 'ox-html)
+(setq org-export-with-broken-links t)
+(setq org-html-htmlize-output-type 'css)
+(setq org-export-babel-evaluate nil)
+;;(setq org-src-fontify-natively t)
+
 (setq org-publish-project-alist
       '(
 
         ;; create all projects overspanning website
-
        ("orgweb" :components ("orgweb-notes" "orgweb-static" "orgweb-themes"))
 
 
@@ -56,6 +64,6 @@
   (message "fixStyleFolder called!")
   (setq publishing-directory (plist-get projectPropertyList ':publishing-directory ))
   (shell-command (format "pDIR=%s; echo \"${pDIR}\"" publishing-directory))
-  (shell-command (format "bash ~lubuntu/org/live-scripting/bin/fixStyleFolder.sh -c mycopy -d %s" publishing-directory))
+  (shell-command (format "bash ~lubuntu/org/live-scripting/bin/publish.sh -c mycopy -d %s" publishing-directory))
 )
 

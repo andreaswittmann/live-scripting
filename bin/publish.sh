@@ -17,15 +17,14 @@
 #==============================================================================
 
 
-
 show_usage()
 {
         echo "USAGE: $0 -c <Command> -L <Loglevel>"
         echo "  [This is just a template. Insert your usage here.]"
         echo "Options:"
         echo "  -c <Command>, command are:"
-        echo "    mytest - test function for this script."
-        echo "    mycopy - link the publishing dir to all sub-folders."
+        echo "    publish - publish or update the website."
+        echo "    mycopy - copy the publishing dir to all sub-folders."
         echo "  -d <directory>"
         echo "    directory - This is the publishing directory that should be linked. "
         echo "  -L <Loglevel>, sets the log level of this script.:"
@@ -36,6 +35,7 @@ show_usage()
         echo "Example:"
         echo "    $0 -c mycopy -d /var/www/html/orgweb/styles -L DEBUG"
         echo "    $0 -c mycopy -d /var/www/html/orgweb/styles"
+        echo "    $0 -c publish -L DEBUG "
 }
     
 #==============================================================================
@@ -104,14 +104,26 @@ mytest()
 # Functions of this Script
 #==============================================================================
 
-cmd01(){
-  log_info "cmd01 called!"
-
-}
 
 cmd02(){
   log_info "cmd02 called!"
 
+}
+
+### publish the projet
+publish()
+{
+    log_debug "Function publish called."
+    # publish-project t will build all the HTML files.
+    log_info "running org-publish for orgweb"
+    cd ~/org/live-scripting
+    /snap/bin/emacs --batch --load publish-project.el --eval '(org-publish "orgweb" t)'
+    
+    # sync to S3
+    log_info "Syncing website to aws s3"
+    export AWS_PROFILE=anwi-gmbh
+    cd /var/www/html/orgweb
+	aws s3 sync /var/www/html/orgweb s3://live-scripting --delete 
 }
 
 ### copy the input folder to all levels below
@@ -165,7 +177,7 @@ mycopy_helper()
 }
 ### Helper Function that makes relatives links. TARGET_DIR must be sub-path of SOURCE_DIR
 ### This function creates relative symlinks to the TARGET_DIR
-mycopy_helper_symlins()
+mycopy_helper_symlinks()
 {
     export TARGET_DIR=$1 # e.g. /var/www/html/orgweb/styles
     export SOURCE_DIR=$2 # e.g /var/www/html/orgweb/live-scripting
@@ -214,7 +226,7 @@ if (( ${#} != 0 )); then
       c)
         # command: depending on the command choose the action, which is evalutated later.
         case ${OPTARG} in
-          mycopy|cmd01|cmd02|mytest)
+          mycopy|publish|cmd02|mytest)
             ACTION=${OPTARG}
             ;;
           *)
@@ -268,8 +280,8 @@ fi
 
 # Execute command.
 case ${ACTION} in
-  cmd01)
-    cmd01
+  publish)
+    publish
     ;;
   cmd02)
     cmd02
