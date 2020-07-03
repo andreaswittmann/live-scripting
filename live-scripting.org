@@ -505,7 +505,7 @@ Zunächst lege ich das Verzeichniss für die Webroot an und vergebe Rechte um al
 ### Clean up 
 sudo rm -rf   /var/www/html/orgweb/
 sudo rm -rf   /var/www/html/
-ham2burg
+*******
 ### create directoy for project live-scripting
 sudo mkdir -p   /var/www/html/orgweb
 ### nginx worker and lubuntu must  have access
@@ -801,7 +801,6 @@ That's it.
 #+begin_src  bash
 ### Clean up and clone Website.
 sudo rm -rf /var/www/html/orgweb/
-ham2burg
 cd /var/www/html/
 ls -la
 
@@ -889,7 +888,7 @@ Other publishing options like web servers or Amazon S3 will be explored.
 ** Publish to Amazon S3
 Amazon S3 is a storage service that includes basic webserver capabilities. It can host static websites, but doesn't not allow for https and authentication. This is fine for this project.
 
-**** Installation of aws-cli and bucket creation
+*** Installation of aws-cli and bucket creation
 I need the the command line client from aws to access s3 buckets. I want to install aws-cli version 2.
 I follow instructions from https://docs.aws.amazon.com/de_de/cli/latest/userguide/install-cliv2-linux.html
 
@@ -899,7 +898,6 @@ cd ~/Downloads/aws-cli
 ls -la
 ## we need curl
 sudo apt install curl
-ham2burg
 
 ## install aws-cli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -926,7 +924,7 @@ aws s3 ls s3://live-scripting --recursive
 Ok, now access s3 via the aws cli works.
 
 
-**** Cleanup and Create Website
+*** Cleanup and Create Website
 
 The following code deletes the local Website, touches all file in the org folder and recreates the local website.
 It then syncs to S3.
@@ -953,7 +951,7 @@ aws s3 sync /var/www/html/orgweb s3://live-scripting --delete
 
 The website is available at http://live-scripting.s3-website.eu-central-1.amazonaws.com/sitemap.html
 
-**** Create a bucket policy
+*** Create a bucket policy
 The bucket has to be made available for public access. I follow the aws instructions: https://docs.aws.amazon.com/de_de/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html
 I use the aws management console. 
 During the process I create the following bucket policy.
