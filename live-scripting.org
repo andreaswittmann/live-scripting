@@ -913,49 +913,102 @@ aws s3 ls
 aws s3 mb s3://live-scripting
 aws s3 ls s3://live-scripting --recursive
 
-### Sync website to 
-cd /var/www/html/orgweb
-pwd
-find . 
-ls -la
-aws s3 sync /var/www/html/orgweb s3://live-scripting --delete 
+#+end_src
+
+Ok, now access s3 via the aws cli works.
 
 
-### fix wrong links
+**** Cleanup and Create Website
+
+The following code deletes the local Website, touches all file in the org folder and recreates the local website.
+It then syncs to S3.
+
+#+begin_src bash
+### Delete Website on Bucket
 mkdir ~/temp
 cd ~/temp
 cp /var/www/html/orgweb/sitemap.html .
 ls -la
 aws s3 sync . s3://live-scripting --delete 
 
+### Delete and create local website.
+rm -rf /var/www/html/orgweb/*
+find ~/org/ -exec touch {} \;
+### !!! create website in emacs with org publish !!!
+
+### Sync website to S3
+cd /var/www/html/orgweb
+ls -la
+aws s3 sync /var/www/html/orgweb s3://live-scripting --delete 
 
 #+end_src
 
-Ok.
+The website is available at http://live-scripting.s3-website.eu-central-1.amazonaws.com/sitemap.html
 
-The website is available at http://live-scripting.s3-website.eu-central-1.amazonaws.com
-/sitemap.html
+**** Create a bucket policy
+The bucket has to be made available for public access. I follow the aws instructions: https://docs.aws.amazon.com/de_de/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html
+I use the aws management console. 
+During the process I create the following bucket policy.
+#+begin_src 
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::live-scripting/*"
+            ]
+        }
+    ]
+}
+#+end_src
 
-**** Sync orgweb to s3 bucket.
-The aws cli contains 
+Ok, this gives public access to the website.
 
-Problem: on the second run the link /var/www/html/orgweb/styles/styles is created but shouldn't
+
+**** Troubleshooting symlinks.
+Problem: on the second run of fixStyleFolder.sh the link /var/www/html/orgweb/styles/styles is created but shouldn't
 Analysis: This happens only on the second run of the script.
 It also happens in subsequent identical calls to ln
 I don't know why this happens.
-Solution: Defensive code: check before creating link.
+Solution: Instead of using symlinks I replicate the styles folder using rsync.
+On the one hand this approach produces redundant files. On the other, it works stable and allows to use the same solution for local and remote websites.
+
 
 #+begin_src bash
 ## run script 
 ##----------------------------------------------------------------------------------------------- 
  ~/org/live-scripting/bin/fixStyleFolder.sh -c mycopy -d /var/www/html/orgweb/styles -L DEBUG
+ ~/org/live-scripting/bin/fixStyleFolder.sh -c mycopy -d /var/www/html/orgweb/styles
+cp -R ~/org/aw-org-html-themes/styles /var/www/html/orgweb
+
+## test rsync
+export WEB_ROOT=/var/www/html/orgweb
+export SOURCE_DIR=/var/www/html/orgweb/styles
+#export TARGET_DIR=/var/www/html/orgweb/styles
+export TARGET_DIR=/var/www/html/orgweb/live-scripting
+
+# test rsync
+rsync -av --dry-run --delete $SOURCE_DIR $TARGET_DIR
+rsync -av --delete $SOURCE_DIR $TARGET_DIR
+
+ls -la $TARGET_DIR
+find $TARGET_DIR/styles 
+rm -rf $TARGET_DIR/styles
+
+find $WEB_ROOT -name "styles"
+find $WEB_ROOT -name "styles" -exec rm -rf {} \;
 
 ## check resuclt 
 cd /var/www/html/orgweb/styles/
 find /var/www/html/orgweb/ -type l -exec rm {} \;
 find /var/www/html/orgweb/ -type l
 find /var/www/html/orgweb/ -type d
-
 
 ## executing ln two times produes error
 cd   /var/www/html/orgweb/aw-org-html-themes/demo 
@@ -970,6 +1023,7 @@ ln -s  ../../styles styles
  
 #+end_src
 
+Test URL: http://localhost/orgweb/sitemap.html
 
 
 

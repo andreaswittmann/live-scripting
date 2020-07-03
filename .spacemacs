@@ -414,6 +414,7 @@ you should place your code here."
  '(evil-want-Y-yank-to-eol nil)
  '(ispell-dictionary "en_US")
  '(ispell-program-name "/usr/bin/hunspell")
+ '(org-agenda-files (quote ("~/org/live-scripting/live-scripting.org")))
  '(org-download-image-dir "images")
  '(org-download-method (quote directory))
  '(org-export-with-broken-links (quote mark))

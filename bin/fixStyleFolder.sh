@@ -137,8 +137,35 @@ mycopy()
     done
  
 }
-### Helper Function that makes relatives links. TARGET_DIR must be sub-path of SOURCE_DIR
+### Helper Function that copies the SOURCE_DIR to the TARGET_DIR using rsync.
 mycopy_helper()
+{
+    export SOURCE_DIR=$1 # e.g. /var/www/html/orgweb/styles
+    export TARGET_DIR=$2 # e.g /var/www/html/orgweb/live-scripting
+    LINK_NAME=$(basename $TARGET_DIR) # e.g. styles
+    log_debug "Funktion mycopy_helper() called, with TARGET_DIR: " $TARGET_DIR
+    log_debug "Funktion mycopy_helper() called, with SOURCE_DIR: " $SOURCE_DIR
+    log_debug "Funktion mycopy_helper() called, with LINK_NAME: " $LINK_NAME
+
+    ### Don't copy into self. i.e. don't make SOURCE_DIR the TARGET_DIR
+    OMIT_DIR=$(dirname $SOURCE_DIR)
+    log_debug "Funktion mycopy_helper() called, with OMIT_DIR: " $OMIT_DIR
+
+    cd $OMIT_DIR
+    if [[ "$OMIT_DIR" != "$TARGET_DIR" ]]; then
+        # create symbolic links
+        log_debug "pwd " $(pwd)
+        log_info "Executing: rsync -av --delete " $SOURCE_DIR $TARGET_DIR
+        #rsync -av --delete --dry-run  $SOURCE_DIR $TARGET_DIR
+        rsync -av --delete  $SOURCE_DIR $TARGET_DIR
+    else
+        log_warn "Target and Source are equal, preventing copy to self! "
+    fi
+
+}
+### Helper Function that makes relatives links. TARGET_DIR must be sub-path of SOURCE_DIR
+### This function creates relative symlinks to the TARGET_DIR
+mycopy_helper_symlins()
 {
     export TARGET_DIR=$1 # e.g. /var/www/html/orgweb/styles
     export SOURCE_DIR=$2 # e.g /var/www/html/orgweb/live-scripting
