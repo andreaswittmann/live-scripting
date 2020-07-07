@@ -67,3 +67,16 @@
   (shell-command (format "bash ~lubuntu/org/live-scripting/bin/publish.sh -c mycopy -d %s" publishing-directory))
 )
 
+(defun org-download-link-format-function-aw (filename)
+  "The default function of `org-download-link-format-function'."
+  (message "called: org-download-link-format-function-aw")
+  (if (and (>= (string-to-number org-version) 9.3)
+           (eq org-download-method 'attach))
+      (format "[[attachment:%s]]\n"
+              (org-link-escape
+               (file-relative-name filename (org-attach-dir))))
+    (setq abbr-filename (org-link-escape
+                          (funcall org-download-abbreviate-filename-function filename)))
+    (format "[[file:%s][file:%s]]\n" abbr-filename abbr-filename
+           )))
+

@@ -416,6 +416,7 @@ you should place your code here."
  '(ispell-program-name "/usr/bin/hunspell")
  '(org-agenda-files (quote ("~/org/live-scripting/live-scripting.org")))
  '(org-download-image-dir "images")
+ '(org-download-link-format-function (quote org-download-link-format-function-aw))
  '(org-download-method (quote directory))
  '(org-export-with-broken-links (quote mark))
  '(org-sidebar-tree-jump-fn (quote org-sidebar-tree-jump-source))
