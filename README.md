@@ -3,6 +3,7 @@
 
 Live-Scripting is an approach to combine work in IT projects, documentation and information retrieval.
 Very much like test-driven development combines testing and coding, live-scripting documents work in command shells, while doing it.
+![Example of a live-scripting session.](/images/Introduction/2020-07-03_22-06-50_2020-07-03_22-05-56.png)
 ## The Problem
 
 Since more than 30 years, and even now, IT-work in many case is command shell centric. For many IP professionals the bash or other shells constitute a major part of there work. Sophisticated commands are constructed during problem resolution. Normally these commands are deleted at the end of a session. When similar problems arise days or weeks later, similar analysis and solutions steps are repeated again. If documentation of the work is required, it is an extra time consuming task. We wish to document this work in an easy way for ourselves and others. This should include an effective search method to quickly find documented information.
