@@ -24,8 +24,13 @@ Emacs is the ideal tool for it. The *ansi-term* provides for a robust shell inte
 ** Multi Project Website 
 Live-scripting, as it is presented here, is a configuration that spans multiple projects and publishes the org-files and attachments to a single static website. This can be used locally or be synchronized to a web server in an intranet or on the internet. The web site contains a search pages for the whole site based on *lunr*, which provides a full text search index to find information across different pages and projects.  
 
+
+* TODO Translate to English
+The following chapter needs to be translated to english.
+
 * Installation unter lubuntu
 Die Installation wird unter Lubuntu ausgeführt. Lubunut ist leichtgewichtig und eignet sich daher auch für virtuelle Machinen und Cloudumgebungen.
+
 
 ** Vorraussetzungen
 Es ist ein Linux mit einem graphischen Interface und einer GNU Emacs Installation notwenig, um Live-Scripting aufzusezten.
@@ -1114,3 +1119,89 @@ The resulting small picture in the html file is clickable and opens the picture 
 
 In order to use this feature, we need to customize the variable as explained above. 
 
+
+* Test
+
+
+** Side by Side images using a table.
+
+It is possible to place images side by side, using an orgmode table. 
+However tables orgmode tables don't support multi-line cells. Thus it is not possible to enrich it with caption or attributes.
+
+
+
+ #+DOWNLOADED: file:///home/lubuntu/Desktop/1565435.png @ 2020-07-08 08:52:47
+ | [[file:images/Test/2020-07-08_08-52-47_1565435.png][file:images/Test/2020-07-08_08-52-47_1565435.png]] |[[file:images/Test/2020-07-08_08-54-39_banana.jpeg][file:images/Test/2020-07-08_08-54-39_banana.jpeg]] |
+
+
+** Using Ascii Art for folder structure.  
+
+This is a quote block 
+#+begin_quote
+lubuntu@lubuntu-pc:/var/www/html/orgweb/live-scripting/images$ tree
+.
+├── Installation_unter_lubuntu
+│   ├── 2020-06-24_11-15-55_orgcard.pdf
+│   ├── 2020-06-24_11-21-33_banana.jpeg
+│   ├── 2020-06-30_10-25-57_2020-06-21_17-34-52_2020-06-21_17-15-37.png
+│   ├── 2020-06-30_10-26-47_2020-06-21_17-34-52_2020-06-21_17-15-37.png
+│   ├── 2020-07-03_21-03-36_2020-07-03_21-01-27.png
+│   └── 2020-07-07_21-36-29_2020-07-07_21-31-11.png
+├── Introduction
+│   └── 2020-07-03_22-06-50_2020-07-03_22-05-56.png
+└── Test
+    ├── 2020-07-08_08-52-47_1565435.png
+    ├── 2020-07-08_08-53-30_banana.jpeg
+    └── 2020-07-08_08-54-39_banana.jpeg
+#+end_quote
+
+
+This is a source block 
+#+begin_src bash
+alias md='mkdir -p'
+
+
+export THOME=~/temp/tree
+rm -rf $THOME
+md $THOME
+cd $THOME
+mv orgweb org
+### meinleben
+cd $THOME
+md orgweb/meinleben
+cd orgweb/meinleben
+touch Arbeit.org
+touch MeinLeben.org 
+touch CEB.org
+
+
+
+
+md data
+md Arbeit.data
+md MeinLeben.data
+md CEB.data
+md images
+
+### training
+cd $THOME
+md orgweb/training
+cd orgweb/training
+touch KubernetesCKA.org
+touch AWSTraining.org
+md KubernetesCKA.data
+md AWSTraining.data
+
+
+cd $THOME
+tree
+tree -d
+tree -t
+tree -v
+tree -c
+
+#+end_src
+
+
+
+http://localhost/orgweb/live-scripting/images/Introduction/2020-07-03_22-06-50_2020-07-03_22-05-56.png
