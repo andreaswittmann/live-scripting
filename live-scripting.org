@@ -24,25 +24,21 @@ Emacs is the ideal tool for it. The *ansi-term* provides for a robust shell inte
 ** Multi Project Website 
 Live-scripting, as it is presented here, is a configuration that spans multiple projects and publishes the org-files and attachments to a single static website. This can be used locally or be synchronized to a web server in an intranet or on the internet. The web site contains a search pages for the whole site based on *lunr*, which provides a full text search index to find information across different pages and projects.  
 
-
-* TODO Translate to English
-The following chapter needs to be translated to english.
-
-* Installation unter lubuntu
-Die Installation wird unter Lubuntu ausgeführt. Lubunut ist leichtgewichtig und eignet sich daher auch für virtuelle Machinen und Cloudumgebungen.
+* Installation on lubuntu
+The installation is performed on Lubuntu. Lubunut is lightweight and therefore suitable for virtual machines and cloud environments.
 
 
-** Vorraussetzungen
-Es ist ein Linux mit einem graphischen Interface und einer GNU Emacs Installation notwenig, um Live-Scripting aufzusezten.
-In diesem Beispiel wird Lubuntu 19.10 und GNU Emacs 26.3 verwendet. 
+** Prerequisites
+A Linux with a graphical interface and a GNU Emacs installation is required to use live scripting.
+In this example we use Lubuntu 19.10 and GNU Emacs 26.3. 
 
-#+Caption: Dieses Listing zeigt den Lubuntu Upgrade von von 19.04 auf 19.10 und die Emacs Installation.
+#+Caption: This listing shows the Lubuntu upgrade from 19.04 to 19.10 and the Emacs installation.
 #+begin_src bash
 sudo sed -i -e 's|disco|eoan|g' /etc/apt/sources.list
 sudo apt update
 sudo apt upgrade
 
-### Neues Release
+### New Release
 lubuntu@lubuntu-pc:~$ lsb_release -a
 No LSB modules are available.
 Distributor ID: Ubuntu
@@ -60,13 +56,11 @@ emacs 26.3 from Alex Murray (alexmurray) installed
 mkdir org; cd org
 git clone https://github.com/andreaswittmann/live-scripting.git 
 #+end_src
-
-Damit sind die Vorraussetzungen für live-scripting geschaffen.
-
+This creates the prerequisites for live-scripting.
 
 ** Basic Live-Scripting
-In der Basis-Konfiguration wird die GNU Emacs Installation angepasst, um aus einer Orgmode-Datei Shell-Befehle auszuführen.
-Dazu benutze ich die init.el aus diesem Projekt
+In the base configuration the GNU Emacs installation is adapted to execute shell commands from an orgmode file.
+I use the init.el from this project
 
 #+begin_src bash
 ### Copy init.el to emacs
@@ -75,19 +69,19 @@ cp ~/org/live-scripting/init.el ~/.emacs.d/
 ### Restart emacs
 #+end_src 
 
-Wir öffnen nun in emacs zwei Fenster nebeneinander. Im rechten führen wir ein ansi-term aus. 
-Im linken Fenster führen wir Shell-Befehle aus einer Orgmode-Datei aus. 
+We now open two windows side by side in emacs. In the right one we execute an ansi-term. 
+In the left window we execute shell commands from an orgmode file. 
 
-| M-x 3         | 2 Fenster öffnen                     |
-| C-x o         | other-window                         |
-| M-x ansi-term | Ansi Term öffnen                     |
-| C-x 0         | other-window                         |
-| F5            | Befehl senden und eine Zeile weiter. |
+| M-x 3         | Open two windows                        |
+| C-x o         | other-window                            |
+| M-x ansi-term | Open ansi-term                          |
+| C-x 0         | other-window                            |
+| F5            | Send command and step one line further. |
 
-Es können jezt Shell-Befehle direkt ausgeführt werden. Der Code-Block dient nur der Formatierung. 
+Now shell commands can be executed directly. The code block is only for formatting. 
 
 #+begin_src bash
-### Der 
+### example execution of shell commands with live-scripting 
 
 ls -la
 date
@@ -95,13 +89,14 @@ whoami
 pwd
 #+end_src
 
-** Spacemacs Konfiguration
-Emacs Konfiguraiton ist sehr zeitaufwendig. Mit dem Spacemacs Projekt erhält man eine sehr umfangreich konfiguriertes Emacs.
+
+** Spacemacs configuration
+Emacs configuration is very time consuming. With the Spacemacs project you get a very extensively configured Emacs.
 *** Installation
-Spacemacs wird von GitHub geklont. Vorher sichere ich das Zielverzeichnis weg, damit es nicht überschrieben wird. Das alte init.el wird nicht mehr verwendet.
+Spacemacs is cloned from GitHub. Before doing so, I backup the destination directory so that it is not overwritten. The old init.el is no longer used.
 
 #+begin_src bash
-### move emacs directory, to save it. 
+### move emacs directory, to save it 
 mv ~/.emacs.d ~/_emacs.d
 mkdir ~/.emacs.d
 cd ~/.emacs.d
@@ -110,13 +105,13 @@ ls -la
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 #+end_src
 
-Emacs wird nun neu gestartet. Es folgt der Spacemacs Startdialog.
-Ich wähle ich folgende Optionen:
+Emacs will now restart. The Spacemacs start dialog follows.
+I choose the following options:
 - Editing Style: emacs
 - Distribution: standard
-- Completion Frameword: helm
+- Completion Framework: helmet
 
-Ich editire ~/.spacemacs um folgende Layers zu benutzen:
+I edit ~/.spacemacs to use the following layers:
 #+begin_src emacs-lisp
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -154,10 +149,9 @@ Ich editire ~/.spacemacs um folgende Layers zu benutzen:
     
     )
 #+end_src 
+Emacs has to be restarted several times until it initializes without errors.
 
- Emacs muss danach mehrfach neu gestartet werden, bis er sich fehlerfrei initialisiert.
-
-Ich möchte das Datei .spacemacs ein Teil des Projekts wird. Sie wird vom Benutzerverzeichnis verlinkt.
+I want the .spacemacs file to become part of the project. It will be linked from the user directory.
 #+begin_src bash
 cd ~
 mv .spacemacs org/live-scripting/
@@ -166,8 +160,8 @@ ln -s ~/org/live-scripting/.spacemacs ~/.spacecmacs
 #+end_src
 
 
-*** Default Theme einstellen. 
-Dazu muss man die Variable dotspacemacs-themes in .spacemacs editieren.
+*** Configuring the Default Theme.
+To do this you have to edit the variable dotspacemacs-themes in the  .spacemacs file.
 #+begin_src emacs-lisp
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
@@ -181,8 +175,8 @@ Dazu muss man die Variable dotspacemacs-themes in .spacemacs editieren.
 
 
 *** Send to ansi-term 
-Das alte inti.el wurde durch das .spacemacs ersetzt. Ich muss hier die Änderungen machen um den ansi-term zu steuern.
-Dazu wird die Funktion  dotspacemacs/user-config erweitert.
+The old inti.el was replaced by the .spacemacs. I have to make necessary changes here to control the ansi-term.
+For this purpose the function dotspacemacs/user-config is extended.
 
 
 #+begin_src emacs-lisp
@@ -254,9 +248,8 @@ Dazu wird die Funktion  dotspacemacs/user-config erweitert.
   (global-set-key [(C-down)] 'move-line-down)
 #+end_src
 
-Jetzt können Befehl direkt in einem ansi-term ausgeführt werden.
+Now commands can be executed directly in an ansi-term.
 Test:
-
 | F5 | send line to ansi-term        |
 | F6 | send region to ansi-term      |
 | F7 | othe window (C-x o)           |
@@ -272,42 +265,32 @@ date
 
 
 
+*** Configure Flyspell.
+Flyspell already works. I want to switch the dictionary to German.
+For this purpose it must be installed first. In Ubuntu this is done via the package manager.
+But I would rather use hunspell and install it together with the dictionary. 
+Hints for dictionaries can be found at Ubuntu: [[https://wiki.ubuntuusers.de/Rechtschreibkorrektur/#Woerterb%C3%BCcher][https://wiki.ubuntuusers.de/Rechtschreibkorrektur/#Woerterb%C3%BCcher]]
 
+#+begin_src bash
+### load aspell Dictionary
+sudo apt-get install aspell-en
 
-
-
-
-
-
-
-
-
-*** Flyspell konfigurieren.
-Flyspell funktioniert bereits. Ich möchte das Dictionary auf deutsch umstellen.
-Dazu muss es erste installiert werden. Das geht bei Ubuntu über den Paket-Manager.
-Ich möchte aber lieber hunspell verwenden und installiere es gleich mit. 
-Hinweise zu Dictionaries gibt es bei Ubuntu: [[https://wiki.ubuntuusers.de/Rechtschreibkorrektur/#Woerterb%C3%BCcher][https://wiki.ubuntuusers.de/Rechtschreibkorrektur/#Woerterb%C3%BCcher]]
-
-#+begin_src  bash
-### aspell Dictionary laden
-sudo apt-get install aspell-de
-
-### Hunspell installieren.
+### Install Hunspell.
 sudo apt-get install hunspell
-sudo apt-get install hunspell-de-de
-sudo apt-get install hunspell-de-de-frami 
+sudo apt-get install hunspell-en
+sudo apt-get install hunspell-en-en-frami 
 
-which hunspell  # /usr/bin/hunspell
+which hunspell # /usr/bin/hunspell
 #+end_src
 
 
 
-| M-x ispell-change-dictionray               | deutsch wählen.                     |
-| M-x customize-varialbe ispell-dictionary   | Sting wählen und deutsch eintragen. |
-| M-x customize-varialbe ispell-program-name | Eintrag: /usr/bin/hunspell          |
+| M-x ispell-change-dictionray | select german.                     |
+| M-x customize-variablebe ispell-dictionary | Select sting and enter english. |
+| M-x customize-variablebe ispell-program-name | entry: /usr/bin/hunspell |
 
-Test: Welches Programm wird verwendet? 
-Im Message-Buffer findet sich der Eintrag: 
+Test: Which program is used? 
+The entry is in the message buffer: 
 #+begin_src 
 Starting new Ispell process /usr/bin/hunspell with deutsch dictionary...
 Saving file /home/lubuntu/org/live-scripting/.spacemacs...
@@ -317,12 +300,14 @@ Saving file /home/lubuntu/org/live-scripting/.spacemacs...
     :PROPERTIES:
     :ID:       8e92dbc8-3003-4938-9093-885bc40197a6
     :END:
-Ich möchte von Magit nach Github schreiben können, ohne erneut das Password einzugeben.
-Das geht mit SSH Schlüssel in drei Schritten. 
+I want to be able to write from Magit to Github without having to enter the password again.
+This can be done with SSH keys in three steps. 
 
-- *1. SSH-Schlüsselpaar erzeugen.*
-- *2. ssh config Datei erzeugen.*
-- *3. Öffentlicher Schlüssel in GitHub registrieren.:*
+- *1. create SSH key pair.*
+- *2. Create ssh config file.*
+- *3. register public key in GitHub.*
+
+
 
 #+begin_src bash
 ### Check for keys.
@@ -371,35 +356,29 @@ git push -v
 
 #+end_src
 
-Die folgende Abbildung zeigt, wie man den öffentlichen Schlüssel zum GitHub Projekt hinzufügt, um mit SSH darauf zugreifen zu können.
-
+The following figure shows how to add the public key to the GitHub project in order to access it with SSH.
 #+DOWNLOADED: file:///home/lubuntu/org/live-scripting/docs/live-scripting/data/8e/92dbc8-3003-4938-9093-885bc40197a6/2020-06-21_17-34-52_2020-06-21_17-15-37.png @ 2020-06-30 10:26:47
-#+Caption: Öffentlichen Schlüssel zum GitHub Projekt hinzufügen.
+#+Caption:Add public key to GitHub project.
 [[file:images/Installation_unter_lubuntu/2020-06-30_10-26-47_2020-06-21_17-34-52_2020-06-21_17-15-37.png]]
 
 
-
-*** Konfiguration von org-download                                   :ATTACH:
+*** Configuration of org-download :ATTACH:
     :PROPERTIES:
-    :ID:       b476e18c-3478-4119-90b8-16c7c4b4df23
+    :ID: b476e18c-3478-4119-90b8-16c7c4b4df23
     :END:
-org-download ist ein Emacs-Paket, das es erlaubt, Bilder per Drag and Drop einer Org-Datei hinzuzufügen. 
+org-download is an Emacs package which allows to add images to an org file by drag and drop. 
 GitHub: https://github.com/abo-abo/org-download
 
-Org-Download bietet zwei Methoden zum abspeichern der Dateien. Ich möchte den Org-Attachment Mechanismus benutzen. 
-Dazu muss die Variable org-download-method per Customization angepasst werden.
+Org-Download offers two methods for saving the files. I want to use the Org-Attachment mechanism. 
+For this purpose the variable org-download-method has to be adapted via customization.
 
 #+DOWNLOADED: file:///tmp/DOS33/2020-06-21_17-51-44.png @ 2020-06-21 17:52:54
-#+Caption: Customization von org-download-method um auf org-attach umzustellen.
-[[attachment:2020-06-21_17-52-54_2020-06-21_17-51-44.png]
+#+Caption: Customization from org-download-method to switch to org-attach.
+[[attachment:2020-06-21_17-52-54_2020-06-21_17-51-44.png]]
 
-
-
-
-
-*** Adobe Font Source Code Pro installieren
-Das ist der Default Font für Spacemacs.
-Es gibt eine Anleitung unter: https://gist.github.com/enzinier/8d00d3f37d2e23985dcfa65662d163fa
+*** Install Adobe Font Source Code Pro
+This is the default font for Spacemacs.
+There is a manual available at: https://gist.github.com/enzinier/8d00d3f37d2e23985dcfa65662d163fa
 
 #+begin_src bash
 #!/bin/sh
@@ -425,10 +404,8 @@ fc-cache -f -v "$FONT_HOME/adobe-fonts/source-code-pro")
 
 ### Die Fonts liegen jetzt unter ~/.local/share/fonts/adobe-fonts/source-code-pro
 #+end_src
-
-Der verwendete Font kann überprüft werden mit: M-x describe-font
-Das ist mir aber zu klein. Deshalb verwende ich 15pt. Das wird in .spacemacs unter der Variable dotspacemacs-default-font eingestellt. 
-
+The font used can be checked with : M-x describe-font
+This is too small for me. Therefore I use 15pt. This is set in .spacemacs using the variable dotspacemacs-default-font. 
 
 #+begin_src emacs-lisp
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -440,39 +417,32 @@ Das ist mir aber zu klein. Deshalb verwende ich 15pt. Das wird in .spacemacs unt
                                :powerline-scale 1.1)
 #+end_src
 
-
-*** SpeedKeys einrichten.
-ES gibt ein das Modul org-speed-commands, manchmal auch speedkeys genannt,, mit dem sich eine Orgsturktur noch viel schneller navigieren lässt. 
-Um sie zu nutzen muss die variable *org-use-speed-commands* über M-x customize-variable auf non-nil gesetzt werden. 
-Links:
+*** Set up SpeedKeys.
+There is a module called org-speed-commands, sometimes also called speedkeys, which can be used to navigate an org-structure much faster. 
+To use it, the variable *org-use-speed-commands* must be set to non-nil via M-x customize-variable. 
+Weblinks:
 - Stack Exchange :: [[https://emacs.stackexchange.com/questions/33310/how-to-use-org-mode-speed-commands-speed-keys][key bindings - how to use org-mode speed commands (speed keys)? - Emacs Stack Exchange]]
 - Blog scratch :: [[http://notesyoujustmightwanttosave.blogspot.com/2011/12/org-speed-keys.html][Org Speed Keys | *scratch*]]
 
 #+begin_example
-Speed-Commands Key Binings anzeigen:
-Cursor auf ersten Stern eines Org-Headins + ?
+Display Speed Commands Key Binings:
+Cursor on first star of an org heading + ?
 #+end_example
 
+** Create local website. 
+I would like to create a website from the project that runs on a local web server. 
+It is a static website that can later be replicated on a web server on the Internet.
 
-
-
-
-
-** Lokale Website erzeugen. 
-Ich möchte nun vom Projekt eine Website erzeugen, die in einem lokalen Webserver läuft. 
-Es ist eine statische Website, die später auf einen Webserver im Internet repliziert werden kann.
-
-*** Installation von nginx
-Ich nutze den nginx Webserver, es gibt ein Installationspaket von Ubuntu.
-Es gibt eine Anleitung unter: 
-[[https://mediatemple.net/community/products/developer/204405534/install-nginx-on-ubuntu][nginx on ubuntu]]
+*** Installation of nginx
+I use the nginx web server, there is an installation package of Ubuntu.
+There is a manual at:  [[https://mediatemple.net/community/products/developer/204405534/install-nginx-on-ubuntu][nginx on ubuntu]]
 
 #+begin_src bash
 ### Install nginx
 sudo apt-get update
 sudo apt-get install nginx
 Y
-## nginx starten
+## start nginx
 sudo  /etc/init.d/nginx start 
 sudo  /etc/init.d/nginx status
 sudo  /etc/init.d/nginx stop
@@ -501,22 +471,20 @@ cat index.html
 ### get local ip address in lan
 ip a  #http://10.211.55.8/
 #+end_src 
+URL for testing: http://localhost/
+URL for testing: http://localhost/index.nginx-debian.html
+URL for testing: http://localhost/simple/index.html
+URL on the LAN: http://10.211.55.8/
+Okay.
 
-URL zum Testen: http://localhost/
-URL zum Testen: http://localhost/index.nginx-debian.html
-URL zum Testen: http://localhost/simple/index.html
-URL im LAN: http://10.211.55.8/
-Ok.
-
-*** Einrichten von org-publish
-Mit org-publish kann eine Website erstellt werden. 
-Zunächst lege ich das Verzeichniss für die Webroot an und vergebe Rechte um als Benutzer lubuntu arbeiten zu können.
-
+*** Setting up org-publish
+With org-publish a website can be created. 
+First of all I create the directory for the webroot and assign permissions to be able to work as user lubuntu.
 #+begin_src bash
 ### Clean up 
 sudo rm -rf   /var/www/html/orgweb/
 sudo rm -rf   /var/www/html/
-*******
+#*******
 ### create directoy for project live-scripting
 sudo mkdir -p   /var/www/html/orgweb
 ### nginx worker and lubuntu must  have access
@@ -531,13 +499,14 @@ ls -la  /var/www/html/orgweb
 find  /var/www/html/orgweb
 cd ~/org/
 find . -exec touch {} \;
+
 #+end_src
 
-Nun benötige ich die Konfiguration in einer alist Variable. Diese Konfiguration beschreibt den Publish Prozess.
+Now I need the configuration in an alist variable. This configuration describes the publishing process.
 
 #+begin_src emacs-lisp
-;; Eval mit C-x C-e am Zeilenende
-;; Publisch mit M-x org-publish-project RET org RET
+;; Eval with C-x C-e at end of line
+;; Publisch with M-x org-publish-project RET org RET
 
 (require 'ox-publish)
 (setq org-publish-project-alist
@@ -577,35 +546,33 @@ Nun benötige ich die Konfiguration in einer alist Variable. Diese Konfiguration
 
 #+end_src
 
-Der Publish-Prozess wird aufgerufen mit: *M-x org-publish-project*
-Dann kann im nächsten Schritt eines der in alist konfigurierten Projekte ausgewählt werden.
+The Publish process is called with : *M-x org-publish-project*
+Then in the next step one of the projects configured in alist can be selected.
 
+This will produce the site with the html page:
 http://localhost/live-scripting/live-scripting.html
-Es kann sein, das es Fehler gibt. Ich möchte fehlertolerant generieren.
-Dazu 
 
 Test URL: http://localhost/live-scripting/sitemap.html
 Test URL: http://localhost/live-scripting/live-scripting.html
 
 
-*** Konfiguration für org-publish aus externer Datei laden.
-Ich möchte die Konfiguration in einer externen Datei speichern und beim Emacs start laden. 
-Dazu erzeuge ich die Datei publish-project.el und lade sie in .spacemacs:
+*** Load configuration for org-publish from external file.
+I want to save the configuration to an external file and load it on Emacs startup. 
+To do this I create the file publish-project.el and load it into .spacemacs:
 #+begin_src emacs-lisp
-;; Lade die Konfiguraiton für org-publish
+;; Load the configuration for org-publish
 (load-file "~/org/live-scripting/publish-project.el")
 #+end_src
-Ok.
+Okay.
 
-*** Dateianhänge und Bilder
-Dateianhänge und Bilder können direkt mit Drag-And-Drop in die Org-Datei reingezogen werden. Das Modul org-download sorgt dann dafür, das diese Dateien eingebettet und im Ordner images abgelegt werden. Bilder werden inline angezeigt, für andere Dateien wird ein Link generiert. 
-Diese Dateien werden auch durch org-publish zur Website kopiert.
+*** Attachments and images
+File attachments and images can be dragged and dropped directly into the org file. The module org-download then takes care that these files are embedded and stored in the folder images. Images are displayed inline, a link is generated for files other and images. 
+These files are also copied by org-publish to the website.
 
-Beispiel für ein eingebettetes Bild:
-
+Example of an embedded image:
 (setq org-image-actual-width nil)
 #+DOWNLOADED: file:///home/lubuntu/Desktop/banana.jpeg @ 2020-06-24 11:21:33
-#+caption: Eingebettete Bild-Datei 
+#+caption: Embedded image file
 #+ATTR_HTML: :width 150px
 [[file:images/Installation_unter_lubuntu/2020-06-24_11-21-33_banana.jpeg][file:images/Installation_unter_lubuntu/2020-06-24_11-21-33_banana.jpeg]]
 Beispiel für eine eingebettete PDF Datei:
@@ -614,17 +581,16 @@ Beispiel für eine eingebettete PDF Datei:
 #+Caption: Eingebettete PDF Datei.
 [[file:images/Installation_unter_lubuntu/2020-06-24_11-15-55_orgcard.pdf]]
 
+*** Problem: Some images are not displayed.
+Some images are not displayed in the generated website.
 
-*** Problem: Einige Bilder werden nicht angezeigt.
-In der generierten Website werden einige Bilder nicht angezeigt.
+**** Analysis
+There are files under the web root that belong to the user lubuntu and have no read permission for others. The nginx worker process belongs to www-data and cannot read these files.
+These are some image files I dragged and dropped from Firefox to org-mode.
 
-**** Analyse
-Es gibt Dateien unter der Webroot, die dem Benutzer lubuntu gehören und keine Leseberechtigung für Andere haben. Der nginx-Workerprozess gehört www-data und kann diese Dateien nicht lesen.
-Es handelt sich um einige Bild-Dateien, die ich mit Drag-And-Drop aus Firefox nach Orgmode gezogen hatte.
-
-**** Lösung
-Ich suche diese Dateien und setze die Berechtigungen.
-Anschließend muss die Website mit org-publish neu generiert werden. 
+**** Solution
+I search these files and set the permissions.
+Afterwards the website must be regenerated with org-publish. 
 
  #+begin_src bash
  ### Handle Permissions.
@@ -636,17 +602,10 @@ Anschließend muss die Website mit org-publish neu generiert werden.
  find images -user lubuntu \! -perm -o+r  -type f -exec chmod o+r {} \;
  #+end_src
 
-
-
-
-
-
-
-
 *** HTML Style Readtheorg
-Es gibt ein sehr gutes CSS basiertes Style-Sheet Framework für Org-Dateien. 
-Siehe: https://github.com/fniessen/org-html-themes
-Ich möchte das Thema ReadTheOrg benutzen und es lokal installieren. 
+There is a very good CSS based style sheet framework for org files. 
+See: https://github.com/fniessen/org-html-themes
+I want to use the ReadTheOrg theme and install it locally. 
 
 #+begin_src bash
 ### Clean update
@@ -659,28 +618,27 @@ find~/org/org-html-themes
 ### 
 #+end_src
 
-Um das die themes  zu benutzen, muss das Verzeichnis styles zur Website kopiert werden. 
-Dazu erweitere ich die Konfiguration in publish-project.el
+To use the themes, the directory styles must be copied to the website. 
+For this I extend the configuration in publish-project.el
 #+begin_src emacs-lisp
        ("org-themes"
-        :base-directory "~/org/org-html-themes/styles"
+        :base directory "~/org/org-html-themes/styles"
         :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|txt\\|mp3\\|ogg\\|swf"
-        :exclude ".git\\|LICENSE"
+        :exclude ".git\\\|LICENSE"
         :publishing-directory "/var/www/html/live-scripting/styles"
         :recursive t
         :publishing-function org-publish-attachment
         )
 #+end_src
 
-Das Thema wird angewendet durch die folgende Directive SETUPFILE am Anfang der org-Datei:
+The theme is applied by the following directive SETUPFILE at the beginning of the org file:
 #+begin_src 
 #+SETUPFILE: ~/org/org-html-themes/setup/theme-readtheorg-local.setup
 #+Options: \n:t
 #+Title: live-scripting
 #+end_src
 
-Mit org-publish wird in dieser Datei jetzt das Style-sheet verwendet.
-
+With calling  org-publish the style-sheet is now used in this file.
 
 ** Multi-Project Website 
 I want to create a website that spans multiple git projects. 
