@@ -429,6 +429,8 @@ Display Speed Commands Key Binings:
 Cursor on first star of an org heading + ?
 #+end_example
 
+* Create Static Website
+In this chapter I want to show how to create a static website from the org-mode files. I will use the org-publish feature which converts org-files to html. Initially I publish to a local web server and then sync the site to the internet.
 ** Create local website. 
 I would like to create a website from the project that runs on a local web server. 
 It is a static website that can later be replicated on a web server on the Internet.
@@ -1058,6 +1060,90 @@ The third pictures shows the result of publishing in emacs batch mode with this 
 Ok. While this solutions solves the problem, more work could be done to fine tune the style sheets.
 
 
+* Adding Search to the web
+An important aspect of documentation is finding the documented information. Once the web grows, full text search is needed. Lunr as a full text search engine is a good choice. It is based on java script and as it states on it's website: it shines like solr but not as bright. 
+[[https://lunrjs.com/][Lunr Website]]
+
+There is a Github project that indexes HTML pages with lunr and cheerio and makes them searchable with a search page.
+[[https://github.com/BLE-LTER/Lunr-Index-and-Search-for-Static-Sites][Lunr-Index-and-Search-for-Static-Sites]] This project can be used as reference.
+I temporarily clone the project to use some artefacts.
+
+The following diagram helps to explain how everything works together.
+#+DOWNLOADED: file:///tmp/02MF3/2020-08-14_18-05-12.png @ 2020-08-14 18:05:28
+#+Caption: Directory Layout for Lunr Search in live-scripting
+[[file:images/Adding_Search_to_the_web/2020-08-14_18-05-28_2020-08-14_18-05-12.png][file:images/Adding_Search_to_the_web/2020-08-14_18-05-28_2020-08-14_18-05-12.png]]
+I use a lunr working director to generate the search index. Lunr and Cheerio must be installed here. 
+I use the file build_index.js from the github project, copy it to the working directory and rename it to buid_index_orgweb.js to reflect that it is modified for orgweb. I have to edit it to insert my web root. This javascript file uses cheerio to parse all html files under my web root and creates the index in a file lunr_index.js.
+This has to be updates whenever the website is published.
+
+At the web root I use the files runclient.js and search.html which I copy from the github project.
+The following script block executes everything.
+
+#+begin_src bash
+
+WORKDIR=~/lunr
+WEBROOT=/var/www/html/orgweb 
+### create a project directory
+mkdir -p $WORKDIR
+cd $WORKDIR
+ls -la 
+mkdir $WEBROOT/lunr
+cd $WEBROOT/lunr
+## Install npm
+sudo apt install npm
+## Install lunr
+npm update node
+npm install lunr
+npm install cheerio
+
+### create a temporary working directory
+mkdir ~/lunr_work
+cd ~/lunr_work
+### clone the project with example site
+git clone https://github.com/BLE-LTER/Lunr-Index-and-Search-for-Static-Sites.git
+cd ~/lunr_work/Lunr-Index-and-Search-for-Static-Sites
+### copy relevant files
+cp build_index.js $WORKDIR/build_index_orgweb.js
+cp example_site/search.css $WEBROOT/
+cp example_site/search.html $WEBROOT/
+cp example_site/lunrclient.js $WEBROOT/
+### clean up  lunr_work
+cd
+rm -rf ~/lunr_work
+
+### Edit costants in build_index_orgweb.js
+cd $WORKDIR
+ls -la
+### build the index for the example site and copy to webroot
+node build_index_orgweb.js
+cp lunr_index.js $WEBROOT
+
+### Check index
+cd $WEBROOT
+ls -la
+
+### Take some artefacts under git control
+LUNR_FILES=~/org/live-scripting/lunr_files
+mkdir $LUNR_FILES
+cp $WORKDIR/build_index_orgweb.js $LUNR_FILES
+cp $WEBROOT/lunrclient.js $LUNR_FILES
+cp $WEBROOT/search.html $LUNR_FILES
+
+### check and git
+cd $LUNR_FILES
+ls -la
+git status
+### use magit to add and commit
+#+end_src
+
+Now the search page is available at: http://localhost/orgweb/search.html
+
+The index creation must be part of the publishing process. 
+
+
+
+* Miscellaneous
+
 ** Handling large images
 Large images can be resized during inline displays and in export to html and PDF. 
 We can use modifier attributes for it. 
@@ -1078,8 +1164,6 @@ The resulting small picture in the html file is clickable and opens the picture 
 In order to use this feature, we need to customize the variable as explained above. 
 
 
-* Test
-
 
 ** Side by Side images using a table.
 
@@ -1092,10 +1176,12 @@ However tables orgmode tables don't support multi-line cells. Thus it is not pos
  | [[file:images/Test/2020-07-08_08-52-47_1565435.png][file:images/Test/2020-07-08_08-52-47_1565435.png]] |[[file:images/Test/2020-07-08_08-54-39_banana.jpeg][file:images/Test/2020-07-08_08-54-39_banana.jpeg]] |
 
 
-** Using Ascii Art for folder structure.  
+** Displaying folder structures
 
-This is a quote block 
-#+begin_quote
+Folder Structures can be created with the unix tree command. 
+It can be presented in a source block.
+
+#+begin_src
 lubuntu@lubuntu-pc:/var/www/html/orgweb/live-scripting/images$ tree
 .
 ├── Installation_unter_lubuntu
@@ -1111,55 +1197,5 @@ lubuntu@lubuntu-pc:/var/www/html/orgweb/live-scripting/images$ tree
     ├── 2020-07-08_08-52-47_1565435.png
     ├── 2020-07-08_08-53-30_banana.jpeg
     └── 2020-07-08_08-54-39_banana.jpeg
-#+end_quote
-
-
-This is a source block 
-#+begin_src bash
-alias md='mkdir -p'
-
-
-export THOME=~/temp/tree
-rm -rf $THOME
-md $THOME
-cd $THOME
-mv orgweb org
-### meinleben
-cd $THOME
-md orgweb/meinleben
-cd orgweb/meinleben
-touch Arbeit.org
-touch MeinLeben.org 
-touch CEB.org
-
-
-
-
-md data
-md Arbeit.data
-md MeinLeben.data
-md CEB.data
-md images
-
-### training
-cd $THOME
-md orgweb/training
-cd orgweb/training
-touch KubernetesCKA.org
-touch AWSTraining.org
-md KubernetesCKA.data
-md AWSTraining.data
-
-
-cd $THOME
-tree
-tree -d
-tree -t
-tree -v
-tree -c
-
 #+end_src
 
-
-
-http://localhost/orgweb/live-scripting/images/Introduction/2020-07-03_22-06-50_2020-07-03_22-05-56.png
