@@ -1137,9 +1137,10 @@ git status
 #+end_src
 
 Now the search page is available at: http://localhost/orgweb/search.html
+And on S3 at: http://live-scripting.s3-website.eu-central-1.amazonaws.com/search.html
 
 The index creation must be part of the publishing process. 
-
+I add it to the script publish.sh.
 
 
 * Miscellaneous

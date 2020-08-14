@@ -118,7 +118,12 @@ publish()
     log_info "running org-publish for orgweb"
     cd ~/org/live-scripting
     /snap/bin/emacs --batch --load publish-project.el --eval '(org-publish "orgweb" t)'
-    
+
+    # create the lunr index
+    log_info "Createing lunr search indes"
+    cd ~/lunr
+    node build_index_orgweb.js
+    cp lunr_index.js /var/www/html/orgweb/
     # sync to S3
     log_info "Syncing website to aws s3"
     export AWS_PROFILE=anwi-gmbh
