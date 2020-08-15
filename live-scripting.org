@@ -1064,6 +1064,8 @@ Ok. While this solutions solves the problem, more work could be done to fine tun
 An important aspect of documentation is finding the documented information. Once the web grows, full text search is needed. Lunr as a full text search engine is a good choice. It is based on java script and as it states on it's website: it shines like solr but not as bright. 
 [[https://lunrjs.com/][Lunr Website]]
 
+** Lunr Integration
+
 There is a Github project that indexes HTML pages with lunr and cheerio and makes them searchable with a search page.
 [[https://github.com/BLE-LTER/Lunr-Index-and-Search-for-Static-Sites][Lunr-Index-and-Search-for-Static-Sites]] This project can be used as reference.
 I temporarily clone the project to use some artefacts.
@@ -1142,8 +1144,36 @@ And on S3 at: http://live-scripting.s3-website.eu-central-1.amazonaws.com/search
 The index creation must be part of the publishing process. 
 I add it to the script publish.sh.
 
+** Creating an Index Page for the web
+I want to have a central index page for orgweb, named index.html, which is located at the orgweb root.
+This page includes the search field and the sitemap. I is created from the file index.org using org-publish.
+
+#+begin_src bash
+## copy file to include in git
+cp  ~/org/index.org ~/org/live-scripting/lunr_files/
+ls -la ~/org/live-scripting/lunr_files/
+## commit and push with magit 
+#+end_src
+
+
+*** Creating the search field
+The Lunr integration uses the search.html file. I copy the content to my new index.org file using HTML export declarations. 
+I also need the content from the HTML head element. I can set these in the index.org using HTML_HEAD declarations.
+The file index.org is located directly under ~/org which is outside any git project. Therefore a save a copy at ~/org/live-scripting/lunr_files/ and put it under git control. On any modification it has to be copied manually.
+
+*** Creating the sitemap
+A sitmap for orgweb is created during the org-publish process. It results in the file sitemap.html
+I only need the body part form it. 
+I use perl to cut the relevant  lines and paste them into the index.org file.
+ 
+
+
+
+
+
 
 * Miscellaneous
+
 
 ** Handling large images
 Large images can be resized during inline displays and in export to html and PDF. 

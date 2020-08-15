@@ -82,7 +82,6 @@ function log_warn {
     cur_date=$(date +"%d.%m.%Y %H:%M:%S"); echo "[${cur_date}][WARN ]: $*"
   fi
 }
-
 function log_error {
   if  [[ $LOG_LEVEL -le 3 ]]; then
     cur_date=$(date +"%d.%m.%Y %H:%M:%S"); echo "[${cur_date}][ERROR]: $*"
