@@ -1151,7 +1151,9 @@ This page includes the search field and the sitemap. I is created from the file 
 #+begin_src bash
 ## copy file to include in git
 cp  ~/org/index.org ~/org/live-scripting/lunr_files/
+cp  ~/org/index.org.template ~/org/live-scripting/lunr_files/
 ls -la ~/org/live-scripting/lunr_files/
+
 ## commit and push with magit 
 #+end_src
 
@@ -1164,10 +1166,44 @@ The file index.org is located directly under ~/org which is outside any git proj
 *** Creating the sitemap
 A sitmap for orgweb is created during the org-publish process. It results in the file sitemap.html
 I only need the body part form it. 
-I use perl to cut the relevant  lines and paste them into the index.org file.
+I use perl to cut the relevant  lines and paste them at the end of  the index.org file.
  
+#+begin_src bash
+cd ~/org
+ls -la 
+cat /var/www/html/orgweb/sitemap.html
+### Cut out relevant part of sitemap.html
+### explanation of the chained command 
+cat /var/www/html/orgweb/sitemap.html | \
+perl -ne 'print if /<body>/../<\/body>/' | \                 # Take only the body part 
+perl -ne 'print if /<div id=\"content\">/../<\/div>/' | \    # Take only the div blocks
+perl -ne 'print if ! ( $. <= 2)' | \                         # Cut away the first two lines 
+perl -ne 'print if ! eof'                                    # Cut away the last line 
 
+### The chained command
+cat /var/www/html/orgweb/sitemap.html  |\
+perl -ne 'print if /<body>/../<\/body>/' |\
+perl -ne 'print if /<div id=\"content\">/../<\/div>/' |\
+perl -ne 'print if ! ( $. <= 2)' |\
+perl -ne 'print if ! eof' > /tmp/sitemap.txt
 
+cat /tmp/sitemap.txt
+
+### Insert it into index.org
+
+cat ~/org/index.org.template 
+cp ~/org/index.org.template ~/org/index.org
+echo "#+BEGIN_EXPORT html" >> ~/org/index.org
+cat /tmp/sitemap.txt  >> ~/org/index.org
+echo "#+END_EXPORT" >> ~/org/index.org
+cat  ~/org/index.org
+
+# Publish for testing
+publish.sh -c publish
+                                  
+#+end_src
+
+This is added to publish.sh
 
 
 

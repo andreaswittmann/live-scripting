@@ -31,26 +31,3 @@ Search the Orgweb using Lunr. Enter a search term.
 * Sitemap
 This is the sitemap of Orgweb.
 
-#+BEGIN_EXPORT html
-<ul class="org-ul">
-<li><a href="index.html">orgweb</a></li>
-<li>aw-org-html-themes
-<ul class="org-ul">
-<li><a href="aw-org-html-themes/README.html">How to export Org mode files into awesome HTML in 2 minutes</a></li>
-<li><a href="aw-org-html-themes/sitemap.html">Sitemap for project org-themes-notes</a></li>
-<li>demo
-<ul class="org-ul">
-<li><a href="aw-org-html-themes/demo/example.html">Example of Tasks</a></li>
-</ul></li>
-</ul></li>
-<li>live-scripting
-<ul class="org-ul">
-<li><a href="live-scripting/sitemap.html">Sitemap</a></li>
-<li><a href="live-scripting/live-scripting.html">live-scripting</a></li>
-<li>moreorg
-<ul class="org-ul">
-<li><a href="live-scripting/moreorg/Readme.html">Org mode syntax</a></li>
-</ul></li>
-</ul></li>
-</ul>
-#+END_EXPORT
