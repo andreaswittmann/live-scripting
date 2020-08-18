@@ -123,11 +123,35 @@ publish()
     cd ~/lunr
     node build_index_orgweb.js
     cp lunr_index.js /var/www/html/orgweb/
+
+    # update sitemap in index.org
+    ### Extract relevant part from sitemap
+    # Take only the body part
+    # Take only the div bloceks
+    # Cut away the first two lines
+    # Cut away the last line
+    cat /var/www/html/orgweb/sitemap.html  |\
+        perl -ne 'print if /<body>/../<\/body>/' |\
+        perl -ne 'print if /<div id=\"content\">/../<\/div>/' |\
+        perl -ne 'print if ! ( $. <= 2)' |\
+        perl -ne 'print if ! eof' > /tmp/sitemap.txt
+    ### Insert it into index.org
+    cat ~/org/index.org.template 
+    cp ~/org/index.org.template ~/org/index.org
+    echo "#+BEGIN_EXPORT html" >> ~/org/index.org
+    cat /tmp/sitemap.txt  >> ~/org/index.org
+    echo "#+END_EXPORT" >> ~/org/index.org
+
+    # publish only index.org again which was modified.
+    log_info "running org-publish for orgweb-index"
+    cd ~/org/live-scripting
+    /snap/bin/emacs --batch --load publish-project.el --eval '(org-publish "orgweb-index" t)'
+
     # sync to S3
     log_info "Syncing website to aws s3"
     export AWS_PROFILE=anwi-gmbh
     cd /var/www/html/orgweb
-	aws s3 sync /var/www/html/orgweb s3://live-scripting --delete 
+	  #aws s3 sync /var/www/html/orgweb s3://live-scripting --delete 
 }
 
 ### copy the input folder to all levels below

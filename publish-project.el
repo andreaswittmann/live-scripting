@@ -22,7 +22,7 @@
         :base-directory "~/org/"
         :base-extension "org"
         :publishing-directory "/var/www/html/orgweb"
-        ;;:exclude ".*"
+        :exclude "lunr_files"
         ;;:include ["foobar.org"]
         :recursive t
         :publishing-function org-html-publish-to-html
@@ -31,6 +31,19 @@
         :auto-sitemap t                ; Generate sitemap.org automagically...
         :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
         :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+        )
+
+       ("orgweb-index"
+        :base-directory "~/org/"
+        :base-extension "org"
+        :publishing-directory "/var/www/html/orgweb"
+        :exclude ".*"
+        :include ["index.org"]
+        :recursive nil
+        :publishing-function org-html-publish-to-html
+        :headline-levels 4             ; Just the default for this project.
+        :auto-preamble t
+        :auto-sitemap nil               ; Generate sitemap.org automagically...
         )
 
        ("orgweb-static"

@@ -1266,3 +1266,6 @@ lubuntu@lubuntu-pc:/var/www/html/orgweb/live-scripting/images$ tree
     └── 2020-07-08_08-54-39_banana.jpeg
 #+end_src
 
+
+
+
