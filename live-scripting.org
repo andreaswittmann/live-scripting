@@ -1166,8 +1166,9 @@ The file index.org is located directly under ~/org which is outside any git proj
 *** Creating the sitemap
 A sitmap for orgweb is created during the org-publish process. It results in the file sitemap.html
 I only need the body part form it. 
-I use perl to cut the relevant  lines and paste them at the end of  the index.org file.
- 
+I use perl to cut the relevant  lines and paste them at the end of the index.org file.
+The code is manually developed below. 
+
 #+begin_src bash
 cd ~/org
 ls -la 
@@ -1203,10 +1204,11 @@ publish.sh -c publish
                                   
 #+end_src
 
-This is added to publish.sh
-
-
-
+This is added to publish.sh and thus automatically updated on every publish action.
+This also includes extending publish-project.el to include a single publish task for index.org.
+Since index.org is modified after the website is published, it has to be regenerated. 
+It is also implemented in publish.sh and works fine.
+Ok. 
 
 * Miscellaneous
 
