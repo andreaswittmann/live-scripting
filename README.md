@@ -22,5 +22,5 @@ Live-scripting, as it is presented here, is a configuration that spans multiple 
 
 ## Project Website
 This project is published with the life-scripting method to a static website hosted on Amazon S3.
-Project website: http://live-scripting.s3-website.eu-central-1.amazonaws.com/live-scripting/live-scripting.html
+Project website: http://live-scripting.s3-website.eu-central-1.amazonaws.com/orgweb/live-scripting/live-scripting.html
 

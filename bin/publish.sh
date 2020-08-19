@@ -116,7 +116,7 @@ publish()
     # publish-project t will build all the HTML files.
     log_info "running org-publish for orgweb"
     cd ~/org/live-scripting
-    /snap/bin/emacs --batch --load publish-project.el --eval '(org-publish "orgweb" t)'
+    /snap/bin/emacs --batch --load publish-project.el --eval '(setq org-use-sub-superscripts nil )' --eval '(org-publish "orgweb" t)'
 
     # create the lunr index
     log_info "Createing lunr search indes"
@@ -152,6 +152,7 @@ publish()
     export AWS_PROFILE=anwi-gmbh
     cd /var/www/html/orgweb
 	  #aws s3 sync /var/www/html/orgweb s3://live-scripting --delete 
+	  aws s3 sync /var/www/html/orgweb s3://orgweb --delete 
 }
 
 ### copy the input folder to all levels below

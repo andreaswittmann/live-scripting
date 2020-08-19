@@ -1,5 +1,9 @@
 #+SETUPFILE: ~/org/aw-org-html-themes/setup/theme-readtheorg-local.setup
 #+Options: \n:t
+#+OPTIONS: ^:{}
+#+HTML_LINK_HOME: /orgweb/index.html
+#+HTML_LINK_UP: /orgweb/index.html
+
 #+Title: live-scripting
 
 * Introduction
@@ -674,7 +678,6 @@ Now I want to use my fork aw-org-html-themes. I have to change the directive SET
 *** Problem: the folder "style" is not found by the html files.
 The publish process does not respect the folder structure. It expects a style folder on the same directory level. The solution must take into account the option to replicate the static website to a server on the internet. 
 
-
 I write the emacs-lisp  function "fixStyleFolder". It is called by :completion-function. It gets the projectPropertyList as an argument. This list contains the publishingDirectory. The function will call the shell script fixStyleFolder.sh that which creates symbolic links in all sub folders.
 
 
@@ -889,11 +892,11 @@ aws s3 ls
 ### Creating a buckets, prepare website hosting on aws gui in the browser
 aws s3 mb s3://live-scripting
 aws s3 ls s3://live-scripting --recursive
+#aws s3 rm s3://live-scripting --recursive
 
 #+end_src
 
 Ok, now access s3 via the aws cli works.
-
 
 *** Cleanup and Create Website
 
@@ -918,7 +921,7 @@ publish.sh -c publish
 ### Sync website to S3
 cd /var/www/html/orgweb
 ls -la
-aws s3 sync /var/www/html/orgweb s3://live-scripting --delete 
+aws s3 sync /var/www/html/orgweb s3://live-scripting/orgweb --delete 
 
 #+end_src
 
@@ -1210,6 +1213,18 @@ Since index.org is modified after the website is published, it has to be regener
 It is also implemented in publish.sh and works fine.
 Ok. 
 
+*** Creating a  Home Button 
+
+The orgmode HTML exporter defines the variables HTML_LINK_HOME and HTML_LINK_UP. I want to include a "Home-Link" on every HTML pages that links to the index.html of orgweb. 
+I need to use a root-relative URL because it must work in orgweb on localhost and on the S3 hosted site. Therefore it is necessary that the directory structures in both websites are identical. 
+
+#+begin_src
+#+HTML_LINK_HOME: /orgweb/index.html
+#+HTML_LINK_UP: /orgweb/index.html
+#+end_src
+
+
+
 * Miscellaneous
 
 
@@ -1271,3 +1286,29 @@ lubuntu@lubuntu-pc:/var/www/html/orgweb/live-scripting/images$ tree
 
 
 
+** Handling Sub and Superscript
+Orgmode uses the underscore letter to indicate superscript. Most of the time this is not what I want. 
+The Variable org-use-sub-superscript can be used to customize this behavior.
+I choose the option "only with braces" to enable special format when I want it. Unfortunately this setting is ignored during the publishing process. As an alternative I use the directive:
+#+begin_src 
+#+OPTIONS: ^:{}
+;;possible values are t, nil, {}
+#+end_src
+
+
+#+begin_src
+This will not be_subscript
+This will be_{subscript} 
+This will not be^superscript
+This will be^{superscript} 
+#+end_src
+
+These lines produce the following result:
+
+
+This will not be_subscript
+This will be_{subscript} 
+This will not be^superscript
+This will be^{superscript} 
+
+Ok.
