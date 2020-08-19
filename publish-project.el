@@ -11,6 +11,13 @@
 (setq org-export-babel-evaluate nil)
 ;;(setq org-src-fontify-natively t)
 
+;; These variables have no effect, I don't know why!
+;;(setq org-use-sub-superscripts '{} )
+;;(setq org-use-sub-superscripts 'nil )
+;;(setq org-html-link-home '"/orgweb/index.html")
+;;(setq org-html-link-up '"/orgweb/index.html")
+
+
 (setq org-publish-project-alist
       '(
 
