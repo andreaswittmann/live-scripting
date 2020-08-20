@@ -1,3 +1,8 @@
+#+SETUPFILE: ~/org/aw-org-html-themes/setup/theme-readtheorg-local.setup
+#+Options: \n:t ^:{}
+#+HTML_LINK_HOME: /orgweb/index.html
+#+HTML_LINK_UP: /orgweb/index.html
+
 #+TITLE:     Org mode syntax
 #+SUBTITLE:  Quick reference card
 #+AUTHOR:    Fabrice Niessen
@@ -6,20 +11,16 @@
 #+KEYWORDS:  org-mode, syntax, quick reference, cheat sheet, recommended practices, latex, beamer, html
 #+LANGUAGE:  en
 #+OPTIONS:   H:4 num:nil toc:2 p:t
-#+SETUPFILE: ~/org/aw-org-html-themes/setup/theme-readtheorg-local.setup
 
 
-
-#+HTML_LINK_HOME: http://www.google.com
-#+HTML_LINK_UP: http://www.bing.com
 
 #+PROPERTY:  header-args :eval yes :exports both :results replace
 
 # #+MACRO: longtext this is a very very long text to include
 
-| *Framework*   | Org mode 9                                          |
-| *Bug tracker* | https://github.com/fniessen/refcard-org-mode/issues |
-| *Source*      | https://github.com/fniessen/refcard-org-mode        |
+| *Framework*     | Org mode 9                                          |
+| *Bug tracker*   | https://github.com/fniessen/refcard-org-mode/issues |
+| *Source*        | https://github.com/fniessen/refcard-org-mode        |
 | *Documentation* | http://refcard-org-mode.readthedocs.org/            |
 
 * Summary

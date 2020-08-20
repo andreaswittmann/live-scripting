@@ -1,6 +1,5 @@
 #+SETUPFILE: ~/org/aw-org-html-themes/setup/theme-readtheorg-local.setup
-#+Options: \n:t
-#+OPTIONS: ^:{}
+#+Options: \n:t ^:{}
 #+HTML_LINK_HOME: /orgweb/index.html
 #+HTML_LINK_UP: /orgweb/index.html
 

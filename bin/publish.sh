@@ -152,7 +152,8 @@ publish()
     export AWS_PROFILE=anwi-gmbh
     cd /var/www/html/orgweb
 	  #aws s3 sync /var/www/html/orgweb s3://live-scripting --delete 
-	  aws s3 sync /var/www/html/orgweb s3://orgweb --delete 
+	  aws s3 sync /var/www/html/orgweb s3://live-scripting/orgweb --delete 
+	 
 }
 
 ### copy the input folder to all levels below
