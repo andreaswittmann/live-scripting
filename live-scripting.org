@@ -5,8 +5,13 @@
 
 #+Title: live-scripting
 
+This is the project page of the life-scripting project : http://live-scripting.s3-website.eu-central-1.amazonaws.com/orgweb/live-scripting/live-scripting.html
+This project is managed on GitHub: https://github.com/andreaswittmann/live-scripting
+The project owner is *Andreas Wittmann IT-Beratung GmbH*: http://www.andreaswittmann.de
+
+
 * Introduction
-Live-Scripting is an approach to combine work in IT projects, documentation and information retrieval. 
+Live-scripting is an approach to combine work in IT projects, documentation and information retrieval. 
 Very much like test-driven development combines testing and coding, live-scripting documents work in command shells, while doing it.
 
 
@@ -16,23 +21,22 @@ Very much like test-driven development combines testing and coding, live-scripti
 
 
 ** The Problem
-Since more than 30 years, and even now, IT-work in many case is command shell centric. For many IP professionals the bash or other shells constitute a major part of there work. Sophisticated commands are constructed during problem resolution. Normally these commands are deleted at the end of a session. When similar problems arise days or weeks later, similar analysis and solutions steps are repeated again. If documentation of the work is required, it is an extra time consuming task. We wish to document this work in an easy way for ourselves and others. This should include an effective search method to quickly find documented information.
+Since more than 30 years, and even now, IT-work in many case is command shell centric. For many IT professionals the bash or other shells constitute a major part of their work. Sophisticated commands are constructed during problem resolution. Normally, these commands are deleted at the end of a session. When similar problems arise days or weeks later, similar analysis and solution steps are repeated again. If documentation of the work is required, it is an extra time consuming task. We wish to document this work in an easy way for ourselves and others. This should include an effective search method to quickly find the documented information.
 
 ** The live-scripting approach
-Live-scripting is a work methodology based on emacs, which documents work on the command shell while doing it. Instead of entering and executing one command at a time, in live-scripting we use two windows side by side: An editor and a shell. The commands in the editor can then be executed with a single key shortcut in the adjacent shell. This is similar to a debugging session where we can step through code during execution. In the emacs editor we can jump between commands, repeat them in any order, duplicate and modify them. The editor is saved into a text file at the end of the session. 
+Live-scripting is a work methodology based on emacs, which documents work on the command shell while doing it. Instead of entering and executing one command at a time, in live-scripting we use two windows side by side: an editor and a shell. The commands in the editor can then be executed with a single key shortcut in the adjacent shell. This is similar to a debugging session where we can step through code during execution. In the Emacs editor we can jump between commands, repeat them in any order, duplicate and modify them. The editor can be saved into an ascii file at the end of the session. 
 
 ** Emacs org-mode
-Emacs is the ideal tool for it. The *ansi-term* provides for a robust shell interface within emacs. Since it is an programmable environment the functions to send a line of code to the ansi-term can be added. Furthermore the *org-mode* module is an emacs *killer app* on its own, adding many features to organize, format and publish the work. At it's core, org-mode is a mark-up language similar to markdown, put much more powerful. Emacs provides elaborated search capabilities across files and projects. The *magit* module is a highly praised interface to git. The fact that most files are plain text invites the storage in a source code control system like *git*. But org-mode can also handle pictures to add screenshots and attachments for file types like PDFs and others. org-mode together with a couple of other emacs modules constitute a cross-media publishing machine which makes it easy to export to HTML, PDF, Markdown, Confluence, and more. 
+Emacs is the ideal tool for this approach. The *ansi-term* provides for a robust shell interface within emacs. Since it is an programmable environment, the functions to send a line of code to the ansi-term can be implemented. Furthermore the *org-mode* module is an emacs *killer app* on its own, adding many features to organize, format and publish the work. At it's core, org-mode is a mark-up language similar to markdown, but much more powerful. Emacs provides elaborated search capabilities across files and projects. The *magit* module is a highly praised interface to git. The fact that most files are plain text invites the storage in a source code control system like *git*. But org-mode can also handle pictures to add screenshots and attachments for file types like PDFs and others. Org-mode together with a couple of other Emacs modules constitute a cross-media publishing machine which makes it easy to export to HTML, PDF, Markdown, Confluence, and more. 
 
 ** Multi Project Website 
-Live-scripting, as it is presented here, is a configuration that spans multiple projects and publishes the org-files and attachments to a single static website. This can be used locally or be synchronized to a web server in an intranet or on the internet. The web site contains a search pages for the whole site based on *lunr*, which provides a full text search index to find information across different pages and projects.  
+Live-scripting, as it is presented here, is a configuration that spans multiple projects and publishes the org-files and attachments to a single static website which I call *orgweb*. This can be used locally or be synchronized to a web server in an intranet or on the internet. The web site contains a search pages for the whole site based on *lunr*, which provides a full text search index for finding information across different pages and projects.  
 
 * Installation on lubuntu
-The installation is performed on Lubuntu. Lubunut is lightweight and therefore suitable for virtual machines and cloud environments.
-
+The installation is performed on Lubuntu, an Ubuntu based Linux distribution. Lubunut is lightweight and therefore suitable for virtual machines and cloud environments. But this is not a restriction. Live-scripting can also be used on other Linux distributions, MacOS and even on Windows systems.
 
 ** Prerequisites
-A Linux with a graphical interface and a GNU Emacs installation is required to use live scripting.
+A Linux installation with a graphical interface and a GNU Emacs installation is required to use live-scripting.
 In this example we use Lubuntu 19.10 and GNU Emacs 26.3. 
 
 #+Caption: This listing shows the Lubuntu upgrade from 19.04 to 19.10 and the Emacs installation.
@@ -62,8 +66,8 @@ git clone https://github.com/andreaswittmann/live-scripting.git
 This creates the prerequisites for live-scripting.
 
 ** Basic Live-Scripting
-In the base configuration the GNU Emacs installation is adapted to execute shell commands from an orgmode file.
-I use the init.el from this project
+In the simplest configuration, the GNU Emacs installation is adapted to execute shell commands from an orgmode file.
+I use the init.el from the live-scripting project, which contains the configuration for basic live-scripting
 
 #+begin_src bash
 ### Copy init.el to emacs
@@ -72,16 +76,17 @@ cp ~/org/live-scripting/init.el ~/.emacs.d/
 ### Restart emacs
 #+end_src 
 
-We now open two windows side by side in emacs. In the right one we execute an ansi-term. 
-In the left window we execute shell commands from an orgmode file. 
+I can now open two windows side by side in Emacs. In the right window I execute an ansi-term. 
+In the left window I execute shell commands from an orgmode file. 
 
+#+caption: Steps for basic live-scripting
 | M-x 3         | Open two windows                        |
 | C-x o         | other-window                            |
 | M-x ansi-term | Open ansi-term                          |
 | C-x 0         | other-window                            |
 | F5            | Send command and step one line further. |
 
-Now shell commands can be executed directly. The code block is only for formatting. 
+Now shell commands can be executed directly. The code block here is only for formatting purposes. 
 
 #+begin_src bash
 ### example execution of shell commands with live-scripting 
@@ -94,9 +99,9 @@ pwd
 
 
 ** Spacemacs configuration
-Emacs configuration is very time consuming. With the Spacemacs project you get a very extensively configured Emacs.
+Configuring Emacs is very time consuming. With the Spacemacs project I get an extensively configured and up-do-date Emacs.
 *** Installation
-Spacemacs is cloned from GitHub. Before doing so, I backup the destination directory so that it is not overwritten. The old init.el is no longer used.
+I clone *Spacemacs* from GitHub. Before doing so, I backup the destination directory so that it is not overwritten. The old init.el is no longer used.
 
 #+begin_src bash
 ### move emacs directory, to save it 
@@ -108,13 +113,13 @@ ls -la
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 #+end_src
 
-Emacs will now restart. The Spacemacs start dialog follows.
+Now, I restart Emacs. The Spacemacs start dialog follows.
 I choose the following options:
 - Editing Style: emacs
 - Distribution: standard
 - Completion Framework: helmet
 
-I edit ~/.spacemacs to use the following layers:
+I edit the file ~/.spacemacs to use the following layers:
 #+begin_src emacs-lisp
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -154,17 +159,16 @@ I edit ~/.spacemacs to use the following layers:
 #+end_src 
 Emacs has to be restarted several times until it initializes without errors.
 
-I want the .spacemacs file to become part of the project. It will be linked from the user directory.
+I want the .spacemacs file to become part of the project. I link it from the user's home directory.
 #+begin_src bash
 cd ~
 mv .spacemacs org/live-scripting/
 ln -s ~/org/live-scripting/.spacemacs ~/.spacecmacs
-
 #+end_src
-
+Ok.
 
 *** Configuring the Default Theme.
-To do this you have to edit the variable dotspacemacs-themes in the  .spacemacs file.
+To configure the default theme, I edit the variable *dotspacemacs-themes* in the  *.spacemacs* file.
 #+begin_src emacs-lisp
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
@@ -175,11 +179,11 @@ To do this you have to edit the variable dotspacemacs-themes in the  .spacemacs 
                          spacemacs-light)
 
 #+end_src
-
+Ok. 
 
 *** Send to ansi-term 
-The old inti.el was replaced by the .spacemacs. I have to make necessary changes here to control the ansi-term.
-For this purpose the function dotspacemacs/user-config is extended.
+The old *inti.el* file was replaced by the *.spacemacs* file. I have to make necessary changes here to be able to control the ansi-term.
+For this purpose the function *dotspacemacs/user-config* is extended.
 
 
 #+begin_src emacs-lisp
@@ -191,7 +195,7 @@ For this purpose the function dotspacemacs/user-config is extended.
   (if (region-active-p) 
       (send-region "*ansi-term*" (region-beginning) (region-end))))
 
-;; Meine Erweiterungum Lines zu senden
+;; Meine Erweiterung um Lines zu senden
 (defun my-select-current-line ()
   "Selects the current line, including the NEXT-LINE char at the end"
   (interactive)
@@ -251,24 +255,25 @@ For this purpose the function dotspacemacs/user-config is extended.
   (global-set-key [(C-down)] 'move-line-down)
 #+end_src
 
-Now commands can be executed directly in an ansi-term.
-Test:
+Now commands can be executed directly in an ansi-term using function keys.
+
+#+caption: Mapping of function keys to life-scripting actions.
 | F5 | send line to ansi-term        |
 | F6 | send region to ansi-term      |
 | F7 | othe window (C-x o)           |
 | F8 | toggle char run/line run mode |
 
-
+Here is a small test.
 #+begin_src bash
 ls -la
 pwd
 whoami
 date
 #+end_src
+Ok.
 
 
-
-*** Configure Flyspell.
+*** Configuring Flyspell.
 Flyspell already works. I want to switch the dictionary to German.
 For this purpose it must be installed first. In Ubuntu this is done via the package manager.
 But I would rather use hunspell and install it together with the dictionary. 
@@ -287,7 +292,7 @@ which hunspell # /usr/bin/hunspell
 #+end_src
 
 
-
+#+caption: Configuration settings for spell checking.
 | M-x ispell-change-dictionray | select german.                     |
 | M-x customize-variablebe ispell-dictionary | Select sting and enter english. |
 | M-x customize-variablebe ispell-program-name | entry: /usr/bin/hunspell |
@@ -299,18 +304,16 @@ Starting new Ispell process /usr/bin/hunspell with deutsch dictionary...
 Saving file /home/lubuntu/org/live-scripting/.spacemacs...
 #+end_src
 
-*** Magit Authentication                                             :ATTACH:
+*** Magit Authentication                                             
     :PROPERTIES:
     :ID:       8e92dbc8-3003-4938-9093-885bc40197a6
     :END:
-I want to be able to write from Magit to Github without having to enter the password again.
+I want to be able to push from Magit to Github without having to enter the password again.
 This can be done with SSH keys in three steps. 
 
-- *1. create SSH key pair.*
-- *2. Create ssh config file.*
-- *3. register public key in GitHub.*
-
-
+1. create SSH key pair.
+2. Create ssh config file.
+3. register public key in GitHub.
 
 #+begin_src bash
 ### Check for keys.
@@ -365,14 +368,14 @@ The following figure shows how to add the public key to the GitHub project in or
 [[file:images/Installation_unter_lubuntu/2020-06-30_10-26-47_2020-06-21_17-34-52_2020-06-21_17-15-37.png]]
 
 
-*** Configuration of org-download :ATTACH:
+*** Configuration of org-download 
     :PROPERTIES:
     :ID: b476e18c-3478-4119-90b8-16c7c4b4df23
     :END:
-org-download is an Emacs package which allows to add images to an org file by drag and drop. 
+Org-download is an Emacs package which allows to add images to an org file by drag and drop. 
 GitHub: https://github.com/abo-abo/org-download
 
-Org-Download offers two methods for saving the files. I want to use the Org-Attachment mechanism. 
+Org-Download offers two methods for saving the attachements. I use the image directory. 
 For this purpose the variable org-download-method has to be adapted via customization.
 
 #+DOWNLOADED: file:///tmp/DOS33/2020-06-21_17-51-44.png @ 2020-06-21 17:52:54
@@ -395,8 +398,7 @@ FONT_HOME=~/.local/share/fonts
 
 echo "installing fonts at $PWD to $FONT_HOME"
 #mkdir -p "$FONT_HOME/adobe-fonts/source-code-pro"
-f
-ind "$FONT_HOME" -iname '*.ttf' -exec echo '{}' \;
+find "$FONT_HOME" -iname '*.ttf' -exec echo '{}' \;
 
 (git clone \
    --branch release \
@@ -407,8 +409,8 @@ fc-cache -f -v "$FONT_HOME/adobe-fonts/source-code-pro")
 
 ### Die Fonts liegen jetzt unter ~/.local/share/fonts/adobe-fonts/source-code-pro
 #+end_src
-The font used can be checked with : M-x describe-font
-This is too small for me. Therefore I use 15pt. This is set in .spacemacs using the variable dotspacemacs-default-font. 
+To check which fonts are actually used, I enter: *M-x describe-font*
+The default font is too small for me. Therefore I change it to 15pt. This is configured in .spacemacs using the *dotspacemacs-default-font* variable. 
 
 #+begin_src emacs-lisp
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -432,11 +434,26 @@ Display Speed Commands Key Binings:
 Cursor on first star of an org heading + ?
 #+end_example
 
-* Create Static Website
-In this chapter I want to show how to create a static website from the org-mode files. I will use the org-publish feature which converts org-files to html. Initially I publish to a local web server and then sync the site to the internet.
-** Create local website. 
+* Creating a Static Website
+
+In this chapter I want to create a static website from the org-mode files. I will use the org-publish feature which converts org-files to html. Initially I publish to a local web server and then sync the site to the internet.
+Currently I only have one project which is live-scripting. But eventually I want to have multiple projects that will be published altogether. These needs to be considered when setting up the folder structure. Let's have a look at the folder structure and scopes as it is depicted in the following image.
+
+#+DOWNLOADED: file:///tmp/A62UU/2020-09-09_09-22-07.png @ 2020-09-09 09:22:17
+#+caption: Folder Sctructure and Scopes for a Multi-Project Setup.
+[[file:images/Create_Static_Website/2020-09-09_09-22-17_2020-09-09_09-22-07.png][file:images/Create_Static_Website/2020-09-09_09-22-17_2020-09-09_09-22-07.png]] 
+Under the org folder, I can have multiple projects in separate folders that can be managed by git. This constitutes the individual project scope.  Regardless of the project scope, I can open the files of all projects in Emacs and register the org files in the *org agenda file list*. I am thus able to use the orgmode search across all agenda files, which constitutes the orgmode search scope. When I publish the project to a web server I want all projects to be part of a single web, e.g. the orgweb. I will generate a full text search index and a sitemap across all html files of the web. This constitutes the web scope.
+But to begin with, I start with a single project website, still keeping in mind the above considerations. The resulting folder structure is illustrated in the following picture. 
+
+
+#+DOWNLOADED: file:///tmp/WVXU8/2020-09-09_09-40-39.png @ 2020-09-09 09:40:53
+#+caption: Folder Sctructure and Scopes for a Single-Project Setup.
+[[file:images/Create_Static_Website/2020-09-09_09-40-53_2020-09-09_09-40-39.png][file:images/Create_Static_Website/2020-09-09_09-40-53_2020-09-09_09-40-39.png]]
+
+Now instead of choosing the live-scripting as root for the website, I have one indirection level more. While this is not necessary for a single project setup, it greatly helps to extend to a multi-project setup later.
+** Creating local website. 
 I would like to create a website from the project that runs on a local web server. 
-It is a static website that can later be replicated on a web server on the Internet.
+It is a static website that can later be replicated on a web server on the internet.
 
 *** Installation of nginx
 I use the nginx web server, there is an installation package of Ubuntu.
@@ -483,7 +500,7 @@ URL on the LAN: http://10.211.55.8/
 Okay.
 
 *** Setting up org-publish
-With org-publish a website can be created. 
+Org-publish can be used to create a website.
 First of all I create the directory for the webroot and assign permissions to be able to work as user lubuntu.
 #+begin_src bash
 ### Clean up 
@@ -508,6 +525,7 @@ find . -exec touch {} \;
 #+end_src
 
 Now I need the configuration in an alist variable. This configuration describes the publishing process.
+#+caption: Excerpt of publish-project.el 
 
 #+begin_src emacs-lisp
 ;; Eval with C-x C-e at end of line
@@ -518,14 +536,12 @@ Now I need the configuration in an alist variable. This configuration describes 
       '(
 
        ;; ... add all the components here (see below)...
-       ("orgxxx" :components ("org-notes" "org-static"))
-
-
+       ("org" :components ("org-notes" "org-static"))
 
        ("org-notes"
         :base-directory "~/org/live-scripting/"
         :base-extension "org"
-        :publishing-directory "/var/www/html/live-scripting"
+        :publishing-directory "/var/www/html/orgweb/live-scripting"
         ;;:exclude ".*"
         ;;:include ["foobar.org"]
         :recursive t
@@ -541,24 +557,21 @@ Now I need the configuration in an alist variable. This configuration describes 
         :base-directory "~/org/live-scripting/"
         :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|txt\\|mp3\\|ogg\\|swf"
         :exclude ".git\\|LICENSE"
-        :publishing-directory "/var/www/html/live-scripting/"
+        :publishing-directory "/var/www/html/orgweb/live-scripting/"
         :recursive t
         :publishing-function org-publish-attachment
         )
       ))
-
-
-
 #+end_src
 
 The Publish process is called with : *M-x org-publish-project*
 Then in the next step one of the projects configured in alist can be selected.
 
 This will produce the site with the html page:
-http://localhost/live-scripting/live-scripting.html
+http://localhost/orgweb/live-scripting/live-scripting.html
 
-Test URL: http://localhost/live-scripting/sitemap.html
-Test URL: http://localhost/live-scripting/live-scripting.html
+Test URL: http://localhost/orgweb/live-scripting/sitemap.html
+Test URL: http://localhost/orgweb/live-scripting/live-scripting.html
 
 
 *** Load configuration for org-publish from external file.
@@ -580,6 +593,7 @@ Example of an embedded image:
 #+caption: Embedded image file
 #+ATTR_HTML: :width 150px
 [[file:images/Installation_unter_lubuntu/2020-06-24_11-21-33_banana.jpeg][file:images/Installation_unter_lubuntu/2020-06-24_11-21-33_banana.jpeg]]
+
 Beispiel für eine eingebettete PDF Datei:
  
 #+DOWNLOADED: file:///home/lubuntu/Desktop/orgcard.pdf @ 2020-06-24 11:15:55
@@ -1061,7 +1075,6 @@ The third pictures shows the result of publishing in emacs batch mode with this 
 
 Ok. While this solutions solves the problem, more work could be done to fine tune the style sheets.
 
-
 * Adding Search to the web
 An important aspect of documentation is finding the documented information. Once the web grows, full text search is needed. Lunr as a full text search engine is a good choice. It is based on java script and as it states on it's website: it shines like solr but not as bright. 
 [[https://lunrjs.com/][Lunr Website]]
@@ -1076,6 +1089,7 @@ The following diagram helps to explain how everything works together.
 #+DOWNLOADED: file:///tmp/02MF3/2020-08-14_18-05-12.png @ 2020-08-14 18:05:28
 #+Caption: Directory Layout for Lunr Search in live-scripting
 [[file:images/Adding_Search_to_the_web/2020-08-14_18-05-28_2020-08-14_18-05-12.png][file:images/Adding_Search_to_the_web/2020-08-14_18-05-28_2020-08-14_18-05-12.png]]
+
 I use a lunr working director to generate the search index. Lunr and Cheerio must be installed here. 
 I use the file build_index.js from the github project, copy it to the working directory and rename it to buid_index_orgweb.js to reflect that it is modified for orgweb. I have to edit it to insert my web root. This javascript file uses cheerio to parse all html files under my web root and creates the index in a file lunr_index.js.
 This has to be updates whenever the website is published.
@@ -1221,6 +1235,65 @@ I need to use a root-relative URL because it must work in orgweb on localhost an
 #+HTML_LINK_HOME: /orgweb/index.html
 #+HTML_LINK_UP: /orgweb/index.html
 #+end_src
+
+
+
+* Sharing Options
+It is not always possible or wanted to give access to the orgweb to everybody on the internet. There are multiple Options to share the whole  org-web, single org-files or only parts of an org-file. The simplest form is an export to an ascii file which is quite readable but omits pictures and attachements. The most versatile form is a PDF file which features clickable links and inline integration of pictures. It is also possible to zip the whole orgweb or parts of it and send it to the recipient via file sharing. Furthermore there is an Markdown export options as well. All these possiblities produce quite good results out of the box. 
+
+** ASCII Export
+
+
+
+** Markdown Export
+
+
+** HTML Archive
+
+** PDF Export
+The whole orgfile or parts of it can be exported to PDF. This is done via the LaTeX exporter. 
+It's been quite a while since I worked with Latex the last time and I am surprised that it is still used and well supported in 2020. The export to Latex and PDF works flawless and the result is very usable. However, if you are not satisfied with the result, it gets complicated. There are endless ways to tailor the export process, but that requires deep knowledge of the exporter backend, Tex and Latex. Some configurations can be made via org mode directives and emacs variables. The org mode documentation describes in detail. It can be found here: https://orgmode.org/manual/LaTeX-Export.html.
+If you need more flexibility, this tutorial on wrog  is a good starting point to understand and modify  the export process: https://orgmode.org/worg/org-tutorials/org-latex-export.html
+
+To export an org mode file to pdf simply use this command.
+#+begin_src org
+M-x org-letex-export-to-pdf
+#+end_src 
+
+The Latex Class can be controlled with org mode directive.
+Choose the latex class: *article*, report, book.
+, #+LATEX_CLASS: report
+
+Here is an example PDF export of this live-scripting.org.
+#+DOWNLOADED: file:///home/lubuntu/org/live-scripting/live-scripting.pdf @ 2020-08-21 13:07:08
+[[file:images/Sharing_Options/2020-08-21_13-07-08_live-scripting.pdf][file:images/Sharing_Options/2020-08-21_13-07-08_live-scripting.pdf]]
+
+
+
+** Problem: PDF creation fails
+I get the error message:
+#+begin_src
+LaTeX Error: File `wrapfig.sty' not found.
+#+end_src
+*Analysis:*
+This problem is discussed at: https://tex.stackexchange.com/questions/291531/exporting-org-files-to-latex-error
+*Solutions:*
+I could solve the problem by installing texlive and extra packages.
+#+begin_src bash
+sudo su 
+#password
+apt-get update
+apt-get install texlive
+apt-get install texlive-latex-extra
+#+end_src
+
+This installs the versions: 
+#+begin_src bash
+# texlive newest version (2019.20190710-1).
+# texlive-latex-extra newest version (2019.20190710-1).
+#+end_src
+And this solves the problem.
+
 
 
 
