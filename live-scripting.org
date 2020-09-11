@@ -452,21 +452,35 @@ Cursor on first star of an org heading + ?
 
 * Creating a Static Website
 
-In this chapter I want to create a static website from the org-mode files. I will use the org-publish feature which converts org-files to html. Initially I publish to a local web server and then sync the site to the internet.
-Currently I only have one project which is live-scripting. But eventually I want to have multiple projects that will be published altogether. These needs to be considered when setting up the folder structure. Let's have a look at the folder structure and scopes as it is depicted in the following image.
+In this chapter I want to create a static website from the org-mode files. I use the org-publish feature which converts org-files to html. Initially I publish to a local web server and then sync the site to the internet.
 
-#+DOWNLOADED: file:///tmp/A62UU/2020-09-09_09-22-07.png @ 2020-09-09 09:22:17
-#+caption: Folder Sctructure and Scopes for a Multi-Project Setup.
-[[file:images/Create_Static_Website/2020-09-09_09-22-17_2020-09-09_09-22-07.png][file:images/Create_Static_Website/2020-09-09_09-22-17_2020-09-09_09-22-07.png]] 
-Under the org folder, I can have multiple projects in separate folders that can be managed by git. This constitutes the individual project scope.  Regardless of the project scope, I can open the files of all projects in Emacs and register the org files in the *org agenda file list*. I am thus able to use the orgmode search across all agenda files, which constitutes the orgmode search scope. When I publish the project to a web server I want all projects to be part of a single web, e.g. the orgweb. I will generate a full text search index and a sitemap across all html files of the web. This constitutes the web scope.
-But to begin with, I start with a single project website, still keeping in mind the above considerations. The resulting folder structure is illustrated in the following picture. 
+** Folder Structures and Scopes
 
 
-#+DOWNLOADED: file:///tmp/WVXU8/2020-09-09_09-40-39.png @ 2020-09-09 09:40:53
-#+caption: Folder Sctructure and Scopes for a Single-Project Setup.
-[[file:images/Create_Static_Website/2020-09-09_09-40-53_2020-09-09_09-40-39.png][file:images/Create_Static_Website/2020-09-09_09-40-53_2020-09-09_09-40-39.png]]
+ Currently I only have one project which is live-scripting. But eventually I want to have multiple projects that will be published altogether. These needs to be considered when setting up the folder structure. Let's have a look at the folder structure and scopes as it is depicted in the following image.
 
-Now instead of choosing the live-scripting as root for the website, I have one indirection level more. While this is not necessary for a single project setup, it greatly helps to extend to a multi-project setup later.
+ #+DOWNLOADED: file:///tmp/A62UU/2020-09-09_09-22-07.png @ 2020-09-09 09:22:17
+ #+caption: Folder Sctructure and Scopes for a Multi-Project Setup.
+ [[file:images/Create_Static_Website/2020-09-09_09-22-17_2020-09-09_09-22-07.png][file:images/Create_Static_Website/2020-09-09_09-22-17_2020-09-09_09-22-07.png]] 
+ Under the org folder, I can have multiple projects in separate folders that can be managed by git. This constitutes the individual project scope.  Regardless of the project scope, I can open the files of all projects in Emacs and register the org files in the *org agenda file list*. I am thus able to use the orgmode search across all agenda files, which constitutes the orgmode search scope. When I publish the project to a web server I want all projects to be part of a single web, e.g. the orgweb. I will generate a full text search index and a sitemap across all html files of the web. This constitutes the web scope.
+ But to begin with, I start with a single project website, still keeping in mind the above considerations. The resulting folder structure is illustrated in the following picture. 
+
+
+ #+DOWNLOADED: file:///tmp/WVXU8/2020-09-09_09-40-39.png @ 2020-09-09 09:40:53
+ #+caption: Folder Sctructure and Scopes for a Single-Project Setup.
+ [[file:images/Create_Static_Website/2020-09-09_09-40-53_2020-09-09_09-40-39.png][file:images/Create_Static_Website/2020-09-09_09-40-53_2020-09-09_09-40-39.png]]
+
+ Now instead of choosing the live-scripting as root for the website, I have one indirection level more. While this is not necessary for a single project setup, it greatly helps to extend to a multi-project setup later.
+** Architecture of the website 
+The following diagram shows the target architecture for the live-scripting project in the context of the static websites which it produces.
+#+DOWNLOADED: file:///tmp/W88YO/2020-09-11_09-31-11.png @ 2020-09-11 09:33:15
+#+Attr_html: :_width 400px
+#+Attr_org: :_width 400px
+#+caption: Target Architecture for the project live-scripting
+[[file:images/Creating_a_Static_Website/2020-09-11_09-33-15_2020-09-11_09-31-11.png][file:images/Creating_a_Static_Website/2020-09-11_09-33-15_2020-09-11_09-31-11.png]]
+
+In the purple colored box on the right side, there is the org folder which is the place for the project live-scripting and all other projects on the local machine, which are managed here. Besides live-scripting, there is the project aw-org-html-themes which contains the CSS style sheets. There may be any number of other projects. Tthese projects are local, but may be pushed to a remote git server, e.g. GitHub, which is the case for the live-scripting project. The org folder is the starting point for the generation of the static website. This is done with the script *publish.sh* which, in turn, uses the configuration stored in *publish_project.el*. This script implements the production of a static website. In a first step a local website is generated, including all html files, linked images and attachments, a sitemap, and a lunr full text search index. This website is full functional on the local machine. In a second step, the local website is mirrored to Amazon S3 or any other web server. This makes it available on the internet or an intranet.  
+
 ** Creating local website. 
 I would like to create a website from the project that runs on a local web server. 
 It is a static website that can later be replicated on a web server on the internet.
@@ -1325,7 +1339,15 @@ By customizing the variable org-download-link-format-function.
 The function is a modified version of the default function with alters the format of the image link. 
 
 Here is an example. A large screenshot is included but with specified width values.
+
+#+begin_src 
+#+caption: Screenshot that shows the modifications for clickable image links.
+#+Attr_html: :width 200px
+#+Attr_org: :width 200px
+#+end_src
+
 The resulting small picture in the html file is clickable and opens the picture file in full size.
+
 
 #+DOWNLOADED: file:///tmp/ODD35/2020-07-07_21-31-11.png @ 2020-07-07 21:36:29
 #+caption: Screenshot that shows the modifications for clickable image links.
@@ -1340,12 +1362,13 @@ In order to use this feature, we need to customize the variable as explained abo
 ** Side by Side images using a table.
 
 It is possible to place images side by side, using an orgmode table. 
-However tables orgmode tables don't support multi-line cells. Thus it is not possible to enrich it with caption or attributes.
+However orgmode tables don't support multi-line cells. Thus it is not possible to enrich it with caption or attributes.
 
 
 
  #+DOWNLOADED: file:///home/lubuntu/Desktop/1565435.png @ 2020-07-08 08:52:47
- | [[file:images/Test/2020-07-08_08-52-47_1565435.png][file:images/Test/2020-07-08_08-52-47_1565435.png]] |[[file:images/Test/2020-07-08_08-54-39_banana.jpeg][file:images/Test/2020-07-08_08-54-39_banana.jpeg]] |
+ | [[file:images/Test/2020-07-08_08-52-47_1565435.png][file:images/Test/2020-07-08_08-52-47_1565435.png]] | [[file:images/Test/2020-07-08_08-54-39_banana.jpeg][file:images/Test/2020-07-08_08-54-39_banana.jpeg]] |
+ | Apple                                            | Banana                                           |
 
 
 ** Displaying folder structures
