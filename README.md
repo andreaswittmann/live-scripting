@@ -6,11 +6,13 @@ This project is managed on GitHub: <https://github.com/andreaswittmann/live-scri
 The project owner is **Andreas Wittmann IT-Beratung GmbH**: <http://www.andreaswittmann.de>  
 
 ## Video Presentation
-There are Youtube video presenting this project.
+There are two youtube videos presenting this project.
 The video "Introduction to Live-Scripting" gives a general overview of the whole project.
+
 [![img](images/2020-10-03_13-00-36_Video_Live-Scripting_Introduction.jpg "Youtube Video Live-Scripting Introduction")](https://www.youtube.com/watch?v=yeqhcgk2DyE)
 
 The video "Basic Live-Scripting" introduces the concept of command line work and documentation in a single step.
+
 [![img](images/2020-10-03_13-20-36_Video_Basic_Live-Scripting.jpg "Youtube Video Basic Live-Scripting")](https://www.youtube.com/watch?v=/i-LFDV2D6Bk)
 
 ## Functional Areas
