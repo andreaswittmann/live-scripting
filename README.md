@@ -5,6 +5,12 @@ It is created using the live-scripting approach.
 This project is managed on GitHub: <https://github.com/andreaswittmann/live-scripting>  
 The project owner is **Andreas Wittmann IT-Beratung GmbH**: <http://www.andreaswittmann.de>  
 
+## Video Presentation
+There are Youtube video presenting this project.
+https://www.youtube.com/watch?v=yeqhcgk2DyE
+
+https://youtu.be/i-LFDV2D6Bk
+
 ## Functional Areas
 
 Live-scripting is an approach to combine work in IT projects, documentation and information retrieval.  
