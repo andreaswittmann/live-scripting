@@ -13,7 +13,8 @@ The video "Introduction to Live-Scripting" gives a general overview of the whole
 
 The video "Basic Live-Scripting" introduces the concept of command line work and documentation in a single step.
 
-[![img](images/2020-10-03_13-20-36_Video_Basic_Live-Scripting.jpg "Youtube Video Basic Live-Scripting")](https://www.youtube.com/watch?v=/i-LFDV2D6Bk)
+[![img](images/2020-10-03_13-20-36_Video_Basic_Live-Scripting.jpg "Youtube Video Basic Live-Scripting")](https://www.youtube.com/watch?v=i-LFDV2D6Bk)
+
 
 ## Functional Areas
 
