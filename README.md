@@ -8,7 +8,7 @@ The project owner is **Andreas Wittmann IT-Beratung GmbH**: <http://www.andreasw
 ## Video Presentation
 There are Youtube video presenting this project.
 
-[![img][images/2020-10-03_13-00-36_Video_Live-Scripting_Introduction.jpg "Youtube Video Live-Scripting Introduction"](https://www.youtube.com/watch?v=yeqhcgk2DyE)
+[![img](images/2020-10-03_13-00-36_Video_Live-Scripting_Introduction.jpg "Youtube Video Live-Scripting Introduction")](https://www.youtube.com/watch?v=yeqhcgk2DyE)
 
 
 ## Functional Areas
