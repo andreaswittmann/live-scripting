@@ -3,7 +3,7 @@
 This is the project page of the life-scripting project : <http://live-scripting.s3-website.eu-central-1.amazonaws.com/orgweb/live-scripting/live-scripting.html>  
 It is created using the live-scripting approach.  
 This project is managed on GitHub: <https://github.com/andreaswittmann/live-scripting>  
-The project owner is **Andreas Wittmann IT-Beratung GmbH**: <http://www.andreaswittmann.de>  
+The project owner is **Andreas Wittmann IT-Beratung GmbH**: <http://www.anwi.gmbh>  
 
 ## Video Presentation
 There are two youtube videos presenting this project.
